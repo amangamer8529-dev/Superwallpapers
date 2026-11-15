@@ -1,0 +1,189 @@
+/* Shared styles for Superwallpapers information and policy pages */
+.legal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.legal-nav a,
+.site-footer-links a {
+  color: var(--muted, #9aa9bf);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+
+.legal-nav a:hover,
+.site-footer-links a:hover {
+  color: #fff;
+}
+
+.legal-shell {
+  width: min(900px, calc(100% - 36px));
+  margin: 72px auto 100px;
+  position: relative;
+  z-index: 1;
+}
+
+.legal-hero {
+  margin-bottom: 28px;
+}
+
+.legal-hero .eyebrow {
+  margin-bottom: 13px;
+}
+
+.legal-hero h1 {
+  font-family: var(--display, "Space Grotesk", sans-serif);
+  font-size: clamp(36px, 6vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+  margin: 0 0 14px;
+}
+
+.legal-hero h1 span {
+  color: var(--blue, #3995ff);
+}
+
+.legal-hero p {
+  color: var(--muted, #9aa9bf);
+  line-height: 1.8;
+  max-width: 680px;
+  margin: 0;
+}
+
+.legal-card {
+  padding: clamp(22px, 4vw, 42px);
+  border: 1px solid rgba(175, 205, 245, .16);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(20, 34, 55, .82), rgba(9, 17, 30, .82));
+  box-shadow: 0 20px 65px rgba(0, 0, 0, .22), inset 0 1px rgba(255, 255, 255, .06);
+  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(22px);
+}
+
+.legal-updated {
+  color: var(--muted, #9aa9bf);
+  font-size: 12px;
+  margin: 0 0 28px;
+}
+
+.legal-card h2 {
+  font-family: var(--display, "Space Grotesk", sans-serif);
+  font-size: clamp(19px, 3vw, 24px);
+  margin: 30px 0 10px;
+}
+
+.legal-card h2:first-of-type {
+  margin-top: 0;
+}
+
+.legal-card p,
+.legal-card li {
+  color: #c1ccdc;
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.legal-card p {
+  margin: 10px 0;
+}
+
+.legal-card ul,
+.legal-card ol {
+  padding-left: 22px;
+  margin: 10px 0 18px;
+}
+
+.legal-card li {
+  padding-left: 4px;
+  margin: 6px 0;
+}
+
+.legal-card a {
+  color: #75b8ff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.legal-callout {
+  padding: 16px 18px;
+  margin: 20px 0;
+  border-left: 3px solid #3995ff;
+  border-radius: 0 12px 12px 0;
+  background: rgba(57, 149, 255, .08);
+  color: #cbd9eb;
+  line-height: 1.75;
+  font-size: 14px;
+}
+
+.legal-contact-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  margin-top: 18px;
+  border: 1px solid rgba(175, 205, 245, .16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .035);
+}
+
+.legal-contact-card strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.legal-contact-card p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.legal-contact-card a {
+  font-weight: 700;
+}
+
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+}
+
+.legal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 26px 7.2% 34px;
+  border-top: 1px solid var(--line, rgba(160, 190, 230, .12));
+  color: var(--muted, #9aa9bf);
+  font-size: 12px;
+}
+
+.legal-footer .brand {
+  color: var(--text, #f2f6ff);
+}
+
+@media (max-width: 760px) {
+  .legal-nav {
+    display: none;
+  }
+
+  .legal-shell {
+    margin: 42px auto 72px;
+  }
+
+  .legal-footer {
+    padding: 24px 18px 100px;
+  }
+
+  .site-footer-links {
+    gap: 12px 16px;
+  }
+}
