@@ -694,7 +694,7 @@ footer {
 
 /* FALLBACK FOR BROWSERS WITHOUT GLASS SUPPORT */
 
-@supports not ((backdrop-filter: blur(1px))) {
+@supports not ((backdrop-filter: blur (1px))) {
   .topbar,
   .site-menu,
   .bottom-nav,
