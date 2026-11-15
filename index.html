@@ -20,6 +20,7 @@
   <div class="ambient ambient-one"></div>
   <div class="ambient ambient-two"></div>
 
+  <!-- HEADER -->
   <header class="topbar">
     <a class="brand" href="#explore" aria-label="Superwallpapers home">
       <span class="brand-mark"><span></span><span></span><span></span></span>
@@ -33,22 +34,29 @@
     </nav>
 
     <div class="header-actions">
-      <button class="icon-button mobile-search-toggle" id="mobileSearchToggle" aria-label="Search wallpapers">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+      <button class="icon-button mobile-search-toggle" id="mobileSearchToggle" type="button" aria-label="Search wallpapers">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-4-4"></path>
+        </svg>
       </button>
 
-      <button class="user-button" id="authOpen">
+      <button class="user-button" id="authOpen" type="button">
         <span class="user-dot"></span>
         <span id="authButtonText">Sign in</span>
       </button>
 
-      <button class="avatar hidden" id="profileButton" aria-label="Account menu">S</button>
+      <button class="avatar hidden" id="profileButton" type="button" aria-label="Account menu">S</button>
 
-      <button class="menu-toggle" id="homeMenuToggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="siteMenu">
+      <button class="menu-toggle" id="homeMenuToggle" type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="siteMenu">
         <span></span><span></span><span></span>
       </button>
     </div>
 
+    <!-- SITE MENU -->
     <aside class="site-menu hidden" id="siteMenu" aria-label="Website navigation">
       <div class="menu-heading">
         <div>
@@ -81,22 +89,26 @@
       <div class="menu-section-label">BROWSE CATEGORIES</div>
 
       <div class="menu-category-list">
-        <button data-menu-category="All"><span>✦</span> All wallpapers</button>
-        <button data-menu-category="Anime"><span>✧</span> Anime</button>
-        <button data-menu-category="Nature"><span>⌁</span> Nature</button>
-        <button data-menu-category="AMOLED"><span>◐</span> AMOLED</button>
-        <button data-menu-category="Cars"><span>⌁</span> Cars</button>
-        <button data-menu-category="Gaming"><span>▣</span> Gaming</button>
-        <button data-menu-category="Abstract"><span>✳</span> Abstract</button>
-        <button data-menu-category="Space"><span>☄</span> Space</button>
+        <button type="button" data-menu-category="All"><span>✦</span> All wallpapers</button>
+        <button type="button" data-menu-category="Anime"><span>✧</span> Anime</button>
+        <button type="button" data-menu-category="Nature"><span>⌁</span> Nature</button>
+        <button type="button" data-menu-category="AMOLED"><span>◐</span> AMOLED</button>
+        <button type="button" data-menu-category="Cars"><span>⌁</span> Cars</button>
+        <button type="button" data-menu-category="Gaming"><span>▣</span> Gaming</button>
+        <button type="button" data-menu-category="Abstract"><span>✳</span> Abstract</button>
+        <button type="button" data-menu-category="Space"><span>☄</span> Space</button>
       </div>
     </aside>
   </header>
 
   <main>
+    <!-- HERO -->
     <section class="hero" id="explore">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="pulse"></span> YOUR SCREEN, YOUR STYLE</div>
+        <div class="eyebrow">
+          <span class="pulse"></span>
+          YOUR SCREEN, YOUR STYLE
+        </div>
 
         <h1>Give your screen<br>a <span>new feeling.</span></h1>
 
@@ -129,11 +141,15 @@
         <div class="hero-glow"></div>
 
         <div class="art-card art-back">
-          <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1100&q=90" alt="Golden sunrise over mountains">
+          <img
+            src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1100&q=90"
+            alt="Golden sunrise over mountains">
         </div>
 
         <div class="art-card art-front">
-          <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1100&q=90" alt="Starry night sky">
+          <img
+            src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1100&q=90"
+            alt="Starry night sky">
         </div>
 
         <div class="art-chip">
@@ -154,17 +170,19 @@
       </div>
     </section>
 
+    <!-- CATEGORIES -->
     <div class="category-filter-proxy" id="categories" aria-label="Wallpaper categories">
-      <button class="category-pill selected" data-category="All">All wallpapers</button>
-      <button class="category-pill" data-category="Anime">Anime</button>
-      <button class="category-pill" data-category="Nature">Nature</button>
-      <button class="category-pill" data-category="AMOLED">AMOLED</button>
-      <button class="category-pill" data-category="Cars">Cars</button>
-      <button class="category-pill" data-category="Gaming">Gaming</button>
-      <button class="category-pill" data-category="Abstract">Abstract</button>
-      <button class="category-pill" data-category="Space">Space</button>
+      <button class="category-pill selected" type="button" data-category="All">All wallpapers</button>
+      <button class="category-pill" type="button" data-category="Anime">Anime</button>
+      <button class="category-pill" type="button" data-category="Nature">Nature</button>
+      <button class="category-pill" type="button" data-category="AMOLED">AMOLED</button>
+      <button class="category-pill" type="button" data-category="Cars">Cars</button>
+      <button class="category-pill" type="button" data-category="Gaming">Gaming</button>
+      <button class="category-pill" type="button" data-category="Abstract">Abstract</button>
+      <button class="category-pill" type="button" data-category="Space">Space</button>
     </div>
 
+    <!-- WALLPAPER GALLERY -->
     <section class="wallpaper-section" id="wallpapers">
       <div class="section-heading gallery-heading">
         <div>
@@ -182,13 +200,19 @@
               <path d="m20 20-4-4"></path>
             </svg>
 
-            <input id="searchInput" type="search"
+            <input
+              id="searchInput"
+              type="search"
               placeholder="Find wallpapers..."
               aria-label="Search wallpapers"
               autocomplete="off">
 
-            <button class="search-clear" id="searchClear"
-              type="button" aria-label="Clear search" hidden>×</button>
+            <button
+              class="search-clear"
+              id="searchClear"
+              type="button"
+              aria-label="Clear search"
+              hidden>×</button>
           </div>
 
           <select id="sortSelect" aria-label="Sort wallpapers">
@@ -199,13 +223,14 @@
         </div>
       </div>
 
+      <!-- QUICK SEARCH -->
       <div class="search-suggestions">
         <span>QUICK SEARCH</span>
-        <button data-search-term="Anime">Anime</button>
-        <button data-search-term="Naruto">Naruto</button>
-        <button data-search-term="AMOLED">AMOLED</button>
-        <button data-search-term="Nature">Nature</button>
-        <button data-search-term="Space">Space</button>
+        <button type="button" data-search-term="Anime">Anime</button>
+        <button type="button" data-search-term="Naruto">Naruto</button>
+        <button type="button" data-search-term="AMOLED">AMOLED</button>
+        <button type="button" data-search-term="Nature">Nature</button>
+        <button type="button" data-search-term="Space">Space</button>
       </div>
 
       <div class="filter-row">
@@ -224,56 +249,84 @@
         <div class="empty-icon">⌕</div>
         <h3>No wallpapers found</h3>
         <p>Try another search or category.</p>
-        <button class="text-button" id="clearFilters">Clear filters ↗</button>
+        <button class="text-button" id="clearFilters" type="button">
+          Clear filters ↗
+        </button>
       </div>
     </section>
 
+    <!-- JOIN BANNER -->
     <section class="join-banner">
       <div>
         <div class="eyebrow">YOUR WALLPAPER COLLECTION</div>
         <h2>Save the ones you <span>love.</span></h2>
         <p>Sign in to keep your favourite wallpapers together.</p>
       </div>
-      <button class="primary-button" id="joinButton">
+
+      <button class="primary-button" id="joinButton" type="button">
         Create a free account <span>↗</span>
       </button>
+
       <div class="banner-orb"></div>
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer>
     <a class="brand footer-brand" href="#explore">
       <span class="brand-mark"><span></span><span></span><span></span></span>
       <span>SUPER<span class="brand-blue">WALLPAPERS</span></span>
     </a>
+
     <span>Made for screens that deserve better.</span>
     <span>© <span id="year"></span> Superwallpapers</span>
   </footer>
 
   <!-- MOBILE BOTTOM NAVIGATION -->
   <nav class="bottom-nav" id="bottomNav" aria-label="Bottom navigation">
-    <button class="bottom-nav-item is-active" data-bottom-action="home" aria-pressed="true">
-      <svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path><path d="M9 20v-6h6v6"></path></svg>
+    <button class="bottom-nav-item is-active" type="button"
+      data-bottom-action="home" aria-pressed="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m3 10 9-7 9 7"></path>
+        <path d="M5 9v11h14V9"></path>
+        <path d="M9 20v-6h6v6"></path>
+      </svg>
       <span>Home</span>
     </button>
 
-    <button class="bottom-nav-item" data-bottom-action="search" aria-pressed="false">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+    <button class="bottom-nav-item" type="button"
+      data-bottom-action="search" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-4-4"></path>
+      </svg>
       <span>Find</span>
     </button>
 
-    <button class="bottom-nav-item" data-bottom-action="categories" aria-pressed="false">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+    <button class="bottom-nav-item" type="button"
+      data-bottom-action="categories" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+      </svg>
       <span>Browse</span>
     </button>
 
-    <button class="bottom-nav-item" data-bottom-action="saved" aria-pressed="false">
-      <svg viewBox="0 0 24 24"><path d="M20.8 8.7c0 5.1-8.8 10.1-8.8 10.1S3.2 13.8 3.2 8.7A4.7 4.7 0 0 1 12 6.4a4.7 4.7 0 0 1 8.8 2.3Z"></path></svg>
+    <button class="bottom-nav-item" type="button"
+      data-bottom-action="saved" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20.8 8.7c0 5.1-8.8 10.1-8.8 10.1S3.2 13.8 3.2 8.7A4.7 4.7 0 0 1 12 6.4a4.7 4.7 0 0 1 8.8 2.3Z"></path>
+      </svg>
       <span>Saved</span>
     </button>
 
-    <button class="bottom-nav-item" data-bottom-action="menu" aria-pressed="false">
-      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+    <button class="bottom-nav-item" type="button"
+      data-bottom-action="menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16"></path>
+      </svg>
       <span>Menu</span>
     </button>
   </nav>
@@ -281,47 +334,80 @@
   <!-- AUTHENTICATION MODAL -->
   <div class="modal-backdrop hidden" id="authModal">
     <section class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-      <button class="modal-close" data-close="authModal" aria-label="Close">×</button>
-      <div class="modal-brand"><span class="brand-mark"><span></span><span></span><span></span></span></div>
+      <button class="modal-close" type="button" data-close="authModal" aria-label="Close">×</button>
+
+      <div class="modal-brand">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+      </div>
+
       <div class="eyebrow">WELCOME TO THE COLLECTION</div>
       <h2 id="authTitle">Your next favourite<br><span>starts here.</span></h2>
       <p class="modal-desc">Sign in or create an account to save your favourites.</p>
 
       <div class="auth-tabs">
-        <button class="auth-tab active" data-mode="signin">Sign in</button>
-        <button class="auth-tab" data-mode="signup">Create account</button>
+        <button class="auth-tab active" type="button" data-mode="signin">Sign in</button>
+        <button class="auth-tab" type="button" data-mode="signup">Create account</button>
       </div>
 
       <form id="authForm">
-        <label class="field-label" id="nameFieldLabel">Username</label>
-        <input class="form-input" id="usernameInput" placeholder="Your username" autocomplete="username">
+        <label class="field-label" id="nameFieldLabel" for="usernameInput">Username</label>
+        <input class="form-input" id="usernameInput"
+          placeholder="Your username"
+          autocomplete="username">
 
-        <label class="field-label">Email address</label>
-        <input class="form-input" id="emailInput" type="email" placeholder="you@example.com" required autocomplete="email">
+        <label class="field-label" for="emailInput">Email address</label>
+        <input class="form-input" id="emailInput"
+          type="email"
+          placeholder="you@example.com"
+          required
+          autocomplete="email">
 
-        <label class="field-label">Password</label>
-        <input class="form-input" id="passwordInput" type="password" placeholder="At least 6 characters" required minlength="6" autocomplete="current-password">
+        <label class="field-label" for="passwordInput">Password</label>
+        <input class="form-input" id="passwordInput"
+          type="password"
+          placeholder="At least 6 characters"
+          required
+          minlength="6"
+          autocomplete="current-password">
 
-        <button class="primary-button full-button" type="submit" id="authSubmit">Sign in <span>↗</span></button>
+        <button class="primary-button full-button" type="submit" id="authSubmit">
+          Sign in <span>↗</span>
+        </button>
       </form>
 
       <div class="or-divider"><span></span> OR <span></span></div>
-      <button class="google-button" id="googleSignIn"><span class="google-g">G</span> Continue with Google</button>
-      <p class="fine-print">Your password is handled securely by Supabase Authentication.</p>
+
+      <button class="google-button" id="googleSignIn" type="button">
+        <span class="google-g">G</span> Continue with Google
+      </button>
+
+      <p class="fine-print">
+        Your password is handled securely by Supabase Authentication.
+      </p>
     </section>
   </div>
 
   <!-- ACCOUNT MODAL -->
   <div class="modal-backdrop hidden" id="accountModal">
     <section class="modal account-modal" role="dialog" aria-modal="true">
-      <button class="modal-close" data-close="accountModal" aria-label="Close">×</button>
+      <button class="modal-close" type="button" data-close="accountModal" aria-label="Close">×</button>
+
       <div class="account-avatar" id="accountAvatar">S</div>
       <h2 id="accountName">Your account</h2>
       <p id="accountEmail" class="muted"></p>
+
       <div class="account-actions">
-        <button class="secondary-button hidden" id="adminDashboardButton">⚙ Admin dashboard</button>
-        <button class="secondary-button" id="myFavouritesButton">♡ My favourites</button>
-        <button class="secondary-button danger-button" id="signOutButton">Sign out</button>
+        <button class="secondary-button hidden" id="adminDashboardButton" type="button">
+          ⚙ Admin dashboard
+        </button>
+
+        <button class="secondary-button" id="myFavouritesButton" type="button">
+          ♡ My favourites
+        </button>
+
+        <button class="secondary-button danger-button" id="signOutButton" type="button">
+          Sign out
+        </button>
       </div>
     </section>
   </div>
@@ -329,17 +415,21 @@
   <!-- ADMIN DASHBOARD -->
   <div class="modal-backdrop hidden" id="adminModal">
     <section class="modal admin-modal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
-      <button class="modal-close" data-close="adminModal" aria-label="Close">×</button>
+      <button class="modal-close" type="button" data-close="adminModal" aria-label="Close">×</button>
+
       <div class="eyebrow">PRIVATE CONTROL ROOM</div>
       <h2 id="adminTitle">Admin <span>dashboard.</span></h2>
-      <p class="modal-desc">Only the configured administrator account can publish wallpapers.</p>
+      <p class="modal-desc">
+        Only the configured administrator account can publish wallpapers.
+      </p>
 
       <form id="uploadForm" class="upload-form">
         <label class="upload-drop" for="wallpaperFile">
           <span class="upload-symbol">↑</span>
           <b>Choose a wallpaper</b>
           <small>JPG, PNG or WebP · up to 20 MB</small>
-          <input id="wallpaperFile" type="file" accept="image/jpeg,image/png,image/webp" required>
+          <input id="wallpaperFile" type="file"
+            accept="image/jpeg,image/png,image/webp" required>
         </label>
 
         <div class="upload-preview hidden" id="uploadPreview">
@@ -347,29 +437,45 @@
           <button type="button" id="removePreview">Remove image ×</button>
         </div>
 
-        <label class="field-label">Wallpaper title</label>
-        <input class="form-input" id="wallpaperTitle" placeholder="e.g. Midnight mountains" required maxlength="80">
+        <label class="field-label" for="wallpaperTitle">Wallpaper title</label>
+        <input class="form-input" id="wallpaperTitle"
+          placeholder="e.g. Midnight mountains"
+          required maxlength="80">
 
-        <label class="field-label">Category</label>
+        <label class="field-label" for="wallpaperCategory">Category</label>
         <select class="form-input" id="wallpaperCategory">
-          <option>Nature</option><option>AMOLED</option><option>Anime</option>
-          <option>Cars</option><option>Gaming</option><option>Abstract</option>
-          <option>Space</option><option>Minimal</option>
+          <option>Nature</option>
+          <option>AMOLED</option>
+          <option>Anime</option>
+          <option>Cars</option>
+          <option>Gaming</option>
+          <option>Abstract</option>
+          <option>Space</option>
+          <option>Minimal</option>
         </select>
 
-        <label class="field-label">Short description (optional)</label>
-        <input class="form-input" id="wallpaperDescription" placeholder="A short description" maxlength="180">
+        <label class="field-label" for="wallpaperDescription">Short description (optional)</label>
+        <input class="form-input" id="wallpaperDescription"
+          placeholder="A short description"
+          maxlength="180">
 
-        <button class="primary-button full-button" type="submit" id="publishButton">Publish wallpaper <span>↗</span></button>
+        <button class="primary-button full-button" type="submit" id="publishButton">
+          Publish wallpaper <span>↗</span>
+        </button>
       </form>
-      <p class="admin-note">Admin access is enforced by Supabase security policies.</p>
+
+      <p class="admin-note">
+        Admin access is enforced by Supabase security policies.
+      </p>
     </section>
   </div>
 
   <!-- WALLPAPER DETAIL -->
   <div class="modal-backdrop hidden" id="detailModal">
     <section class="modal detail-modal" role="dialog" aria-modal="true">
-      <button class="modal-close light-close" data-close="detailModal" aria-label="Close">×</button>
+      <button class="modal-close light-close" type="button"
+        data-close="detailModal" aria-label="Close">×</button>
+
       <img class="detail-image" id="detailImage" alt="Selected wallpaper">
 
       <div class="detail-content">
@@ -377,22 +483,60 @@
           <span class="quality-tag"><span></span> HIGH RESOLUTION</span>
           <span id="detailCategory"></span>
         </div>
+
         <h2 id="detailTitle"></h2>
         <p id="detailDescription" class="muted"></p>
+
         <div class="detail-actions">
-          <a class="primary-button" id="downloadButton" href="#" download>Download wallpaper <span>↓</span></a>
-          <button class="favourite-button detail-fav" id="detailFavourite">♡ Save</button>
+          <a class="primary-button" id="downloadButton" href="#" download>
+            Download wallpaper <span>↓</span>
+          </a>
+
+          <button class="favourite-button detail-fav" id="detailFavourite" type="button">
+            ♡ Save
+          </button>
         </div>
-        <small class="download-hint">Downloads the original image uploaded by the creator.</small>
+
+        <small class="download-hint">
+          Downloads the original image uploaded by the creator.
+        </small>
       </div>
     </section>
   </div>
 
-  <div class="toast" id="toast" role="status"></div>
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <!-- EXISTING MENU SCRIPT -->
   <script src="homepage-menu.js" defer></script>
+
+  <!-- EXISTING SUPABASE APPLICATION -->
   <script type="module" src="app.js"></script>
-  <script src="homepage-enhancements.js" defer></script>
-</body>
-                                                                                                                                         </html>
-                                                                                                                                         
+
+  <!-- SEARCH ENHANCEMENTS: BUILT INTO INDEX -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("searchInput");
+      const searchClear = document.getElementById("searchClear");
+      const searchButtons = document.querySelectorAll("[data-search-term]");
+
+      if (!searchInput) return;
+
+      const updateClearButton = () => {
+        if (searchClear) {
+          searchClear.hidden = searchInput.value.trim().length === 0;
+        }
+      };
+
+      searchInput.addEventListener("input", updateClearButton);
+
+      searchClear?.addEventListener("click", () => {
+        searchInput.value = "";
+        searchInput.dispatchEvent(new Event("input", { bubbles: true }));
+        searchInput.focus();
+        updateClearButton();
+      });
+
+      searchButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          searchI
