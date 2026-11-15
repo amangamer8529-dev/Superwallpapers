@@ -1,57 +1,335 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { SUPABASE_URL, SUPABASE_ANON_KEY, ADMIN_EMAIL } from "./supabase-config.js";
 
+// Superwallpapers unified application: matches the current index.html IDs.
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const $ = (id) => document.getElementById(id);
-let currentUser = null, wallpapers = [], activeCategory = "All", showFavourites = false;
-let authMode = "signin", activeWallpaper = null, toastTimer;
-const demoWallpapers = [
-  {id:"demo-1",title:"Into the Wild",category:"Nature",description:"A quiet escape into the mountains.",imageUrl:"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1100&q=90",downloads:1280,demo:true},
-  {id:"demo-2",title:"Midnight Sky",category:"Space",description:"A universe full of wonder.",imageUrl:"https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1100&q=90",downloads:940,demo:true},
-  {id:"demo-3",title:"Ocean Calm",category:"Nature",description:"Deep blue, endless calm.",imageUrl:"https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1100&q=90",downloads:875,demo:true},
-  {id:"demo-4",title:"Neon City",category:"Abstract",description:"Electric colour after dark.",imageUrl:"https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1100&q=90",downloads:710,demo:true},
-  {id:"demo-5",title:"Forest Path",category:"Nature",description:"Find a little peace in the green.",imageUrl:"https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1100&q=90",downloads:660,demo:true},
-  {id:"demo-6",title:"Desert Dunes",category:"Minimal",description:"Warm light and endless lines.",imageUrl:"https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=1100&q=90",downloads:530,demo:true},
-  {id:"demo-7",title:"Alpine Morning",category:"Nature",description:"A fresh start above the clouds.",imageUrl:"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1100&q=90",downloads:495,demo:true},
-  {id:"demo-8",title:"Dark Geometry",category:"AMOLED",description:"A minimal look for OLED screens.",imageUrl:"https://images.unsplash.com/photo-1550859492-d5da9d8e45f3?auto=format&fit=crop&w=1100&q=90",downloads:420,demo:true}
-];
-function notify(message){const el=$("toast");el.textContent=message;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),3500)}
-function openModal(id){$(id).classList.remove("hidden");document.body.style.overflow="hidden"}
-function closeModal(id){$(id).classList.add("hidden");if(!document.querySelector(".modal-backdrop:not(.hidden)"))document.body.style.overflow=""}
-document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
-document.querySelectorAll(".modal-backdrop").forEach(back=>back.addEventListener("click",e=>{if(e.target===back)closeModal(back.id)}));
-$("year").textContent=new Date().getFullYear();
+const $ = id => document.getElementById(id);
+const categories = ["All", "Anime", "Nature", "AMOLED", "Cars", "Gaming", "Abstract", "Space", "Minimal"];
+const state = { user: null, wallpapers: [], favourites: new Set(), category: "All", screen: "home", detail: null, mode: "signin" };
+const HISTORY_KEY = "sw-search-history-v2";
+const VIEWED_KEY = "sw-recently-viewed-v2";
+let toastTimeout;
 
-function isAdmin(user=currentUser){return !!user&&user.email?.toLowerCase()===ADMIN_EMAIL.toLowerCase()}
-function authError(e){const map={"Invalid login credentials":"Email or password is incorrect.","User already registered":"An account already exists with this email.","Password should be at least 6 characters":"Choose a stronger password (at least 6 characters).","Email not confirmed":"Please verify your email before signing in.","popup_closed":"Google sign-in was closed."};return map[e.message]||e.message||"Something went wrong. Please try again."}
-function setAuthMode(mode){authMode=mode;document.querySelectorAll(".auth-tab").forEach(t=>t.classList.toggle("active",t.dataset.mode===mode));$("nameFieldLabel").classList.toggle("hidden",mode==="signin");$("usernameInput").classList.toggle("hidden",mode==="signin");$("usernameInput").required=mode==="signup";$("authSubmit").innerHTML=(mode==="signin"?"Sign in":"Create account")+' <span>↗</span>';$("passwordInput").autocomplete=mode==="signin"?"current-password":"new-password"}
-document.querySelectorAll(".auth-tab").forEach(t=>t.addEventListener("click",()=>setAuthMode(t.dataset.mode)));
-$("authOpen").addEventListener("click",()=>{setAuthMode("signin");openModal("authModal")});
-$("joinButton").addEventListener("click",()=>{setAuthMode("signup");openModal("authModal")});
-$("googleSignIn").addEventListener("click",async()=>{const {error}=await supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:`${window.location.origin}${window.location.pathname}`}});if(error)notify(authError(error))});
-$("authForm").addEventListener("submit",async e=>{e.preventDefault();const email=$("emailInput").value.trim(),password=$("passwordInput").value,username=$("usernameInput").value.trim();try{if(authMode==="signup"){if(username.length<2)throw new Error("Please enter a username with at least 2 characters.");const {data,error}=await supabase.auth.signUp({email,password,options:{data:{username,display_name:username}}});if(error)throw error;if(data.session){notify("Account created. Welcome!");closeModal("authModal")}else{notify("Check your email to confirm your account, then sign in.");closeModal("authModal")}}else{const {error}=await supabase.auth.signInWithPassword({email,password});if(error)throw error;notify("Welcome back.");closeModal("authModal")}$("authForm").reset()}catch(err){notify(authError(err))}});
-async function refreshSession(){const {data:{session}}=await supabase.auth.getSession();currentUser=session?.user||null;updateAccountUI();await renderWallpapers()}
-function updateAccountUI(){const user=currentUser;$("authOpen").classList.toggle("hidden",!!user);$("profileButton").classList.toggle("hidden",!user);if(user){const label=user.user_metadata?.username||user.user_metadata?.display_name||user.email?.split("@")[0]||"Account";$("profileButton").textContent=label.slice(0,1).toUpperCase();$("accountAvatar").textContent=label.slice(0,1).toUpperCase();$("accountName").textContent=label;$("accountEmail").textContent=user.email||"";$("adminDashboardButton").classList.toggle("hidden",!isAdmin(user))}}
-supabase.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateAccountUI();renderWallpapers()});
-$("profileButton").addEventListener("click",()=>openModal("accountModal"));
-$("signOutButton").addEventListener("click",async()=>{const {error}=await supabase.auth.signOut();if(error)notify(error.message);else{closeModal("accountModal");notify("Signed out.")}});
-$("adminDashboardButton").addEventListener("click",()=>{if(!isAdmin()){notify("Admin access required.");return}closeModal("accountModal");openModal("adminModal")});
-$("myFavouritesButton").addEventListener("click",()=>{closeModal("accountModal");if(!currentUser){notify("Sign in to view favourites.");return}showFavourites=true;$("galleryTitle").innerHTML='Your <span>favourites.</span>';$("gallerySubtitle").textContent="The wallpapers you've saved.";document.querySelectorAll(".category-pill").forEach(x=>x.classList.remove("selected"));renderWallpapers();$("wallpapers").scrollIntoView({behavior:"smooth"})});
-$("favouritesNav").addEventListener("click",e=>{e.preventDefault();if(!currentUser){notify("Sign in to view your favourites.");openModal("authModal");return}showFavourites=true;$("galleryTitle").innerHTML='Your <span>favourites.</span>';$("gallerySubtitle").textContent="The wallpapers you've saved.";renderWallpapers();$("wallpapers").scrollIntoView({behavior:"smooth"})});
-document.querySelectorAll(".category-pill").forEach(btn=>btn.addEventListener("click",()=>{activeCategory=btn.dataset.category;showFavourites=false;document.querySelectorAll(".category-pill").forEach(x=>x.classList.toggle("selected",x===btn));$("galleryTitle").innerHTML=activeCategory==="All"?'Fresh <span>wallpapers.</span>':`${activeCategory} <span>wallpapers.</span>`;$("gallerySubtitle").textContent="A little inspiration for your lock screen and home screen.";renderWallpapers()}));
-$("searchInput").addEventListener("input",renderWallpapers);$("sortSelect").addEventListener("change",renderWallpapers);$("mobileSearchToggle").addEventListener("click",()=>{$("searchInput").focus();$("wallpapers").scrollIntoView({behavior:"smooth"})});$("clearFilters").addEventListener("click",()=>{$("searchInput").value="";activeCategory="All";showFavourites=false;document.querySelectorAll(".category-pill").forEach(x=>x.classList.toggle("selected",x.dataset.category==="All"));$("galleryTitle").innerHTML='Fresh <span>wallpapers.</span>';$("gallerySubtitle").textContent="A little inspiration for your lock screen and home screen.";renderWallpapers()});
+const safeText = value => String(value ?? "");
+function escapeHTML(value) {
+  return safeText(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]);
+}
+function listFromStorage(key) {
+  try { const data = JSON.parse(localStorage.getItem(key) || "[]"); return Array.isArray(data) ? data : []; }
+  catch { return []; }
+}
+function saveList(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* Storage can be disabled. */ }
+}
+function notify(message) {
+  const el = $("toast"); if (!el) return;
+  el.textContent = safeText(message); el.classList.add("show");
+  clearTimeout(toastTimeout); toastTimeout = setTimeout(() => el.classList.remove("show"), 3700);
+}
+function imageFor(w) { return w?.image_url || ""; }
+function isAdmin() { return !!state.user && state.user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase(); }
+function setMenu(open) {
+  const scrim = $("menuScrim");
+  if (scrim) Object.assign(scrim.style, { position: "fixed", inset: "0", zIndex: "998", background: "rgba(0,0,0,.45)", display: open ? "block" : "none" });
+  $("siteMenu")?.classList.toggle("hidden", !open);
+  $("menuScrim")?.classList.toggle("menu-scrim-open", open);
+  $("menuScrim")?.classList.toggle("hidden", !open);
+  $("homeMenuToggle")?.setAttribute("aria-expanded", String(open));
+  document.body.classList.toggle("menu-is-open", open);
+}
+function navigate(screen) {
+  if (!categories || !["home", "browse", "search", "saved"].includes(screen)) return;
+  state.screen = screen;
+  document.querySelectorAll(".app-screen").forEach(panel => {
+    const active = panel.id === `screen-${screen}`;
+    panel.classList.toggle("hidden", !active);
+    panel.classList.toggle("active", active);
+    panel.setAttribute("aria-hidden", String(!active));
+  });
+  document.querySelectorAll("[data-screen]").forEach(button => {
+    const active = button.dataset.screen === screen;
+    button.classList.toggle("is-active", active);
+    button.classList.toggle("active", active);
+    if (active) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
+  });
+  setMenu(false);
+  window.scrollTo({ top: 0, behavior: "instant" });
+  if (screen === "search") setTimeout(() => $("searchInput")?.focus(), 40);
+  if (screen === "saved") renderSaved();
+  if (screen === "browse") renderBrowse();
+}
+function openModal(id) {
+  const node = $(id); if (!node) return;
+  node.classList.remove("hidden"); document.body.style.overflow = "hidden";
+}
+function closeModal(id) {
+  $(id)?.classList.add("hidden");
+  if (!document.querySelector(".modal-backdrop:not(.hidden)")) document.body.style.overflow = "";
+}
+function authMode(mode) {
+  state.mode = mode;
+  document.querySelectorAll(".auth-tab").forEach(tab => tab.classList.toggle("active", tab.dataset.mode === mode));
+  const signUp = mode === "signup";
+  $("usernameInput").required = signUp;
+  $("usernameInput").classList.toggle("hidden", !signUp);
+  document.querySelector('label[for="usernameInput"]')?.classList.toggle("hidden", !signUp);
+  $("authTitle").innerHTML = signUp ? "Join <span>Superwallpapers.</span>" : "Welcome <span>back.</span>";
+  $("authSubmit").innerHTML = signUp ? "Create account <span>↗</span>" : "Sign in <span>↗</span>";
+}
+function updateAccount() {
+  const user = state.user;
+  $("authOpen")?.classList.toggle("hidden", !!user);
+  $("profileButton")?.classList.toggle("hidden", !user);
+  $("savedSignInButton")?.classList.toggle("hidden", !!user);
+  if (!user) return;
+  const username = user.user_metadata?.display_name || user.user_metadata?.username || user.email?.split("@")[0] || "User";
+  $("profileButton").textContent = username.charAt(0).toUpperCase();
+  $("accountAvatar").textContent = username.charAt(0).toUpperCase();
+  $("accountName").textContent = username;
+  $("accountEmail").textContent = user.email || "";
+  $("adminDashboardButton")?.classList.toggle("hidden", !isAdmin());
+}
+async function loadFavourites() {
+  state.favourites = new Set();
+  if (!state.user) return;
+  const { data, error } = await supabase.from("favourites").select("wallpaper_id").eq("user_id", state.user.id);
+  if (error) { console.warn("Favourites failed:", error); return; }
+  state.favourites = new Set((data || []).map(row => row.wallpaper_id));
+}
+async function loadWallpapers() {
+  const { data, error } = await supabase.from("wallpapers").select("*").order("created_at", { ascending: false });
+  if (error) {
+    console.error("Wallpaper loading failed:", error);
+    state.wallpapers = [];
+    notify("Could not load wallpapers. Check Supabase database and security rules.");
+  } else state.wallpapers = data || [];
+  renderAll();
+}
+function card(w) {
+  const article = document.createElement("article");
+  article.className = "wallpaper-card";
+  const saved = state.favourites.has(w.id);
+  article.innerHTML = `<div class="wallpaper-thumb"><img loading="lazy" alt="${escapeHTML(w.title || "Wallpaper")}"><div class="card-overlay"><button type="button" class="quick-download">View ↗</button><button type="button" class="favourite-button ${saved ? "saved" : ""}" aria-label="Save wallpaper">${saved ? "♥" : "♡"}</button></div></div><div class="card-info"><div class="card-info-top"><h3>${escapeHTML(w.title || "Untitled")}</h3><span class="card-category">${escapeHTML(w.category || "Other")}</span></div><p>Original quality · ${Number(w.downloads || 0).toLocaleString()} downloads</p></div>`;
+  article.querySelector("img").src = imageFor(w);
+  article.querySelector(".wallpaper-thumb").addEventListener("click", () => showDetail(w));
+  article.querySelector(".quick-download").addEventListener("click", e => { e.stopPropagation(); showDetail(w); });
+  article.querySelector(".favourite-button").addEventListener("click", e => { e.stopPropagation(); toggleFavourite(w); });
+  return article;
+}
+function renderGrid(id, items, message = "No wallpapers found yet.") {
+  const grid = $(id); if (!grid) return;
+  grid.replaceChildren();
+  if (!items.length) {
+    const empty = document.createElement("div"); empty.className = "empty-state";
+    const title = document.createElement("h3"); title.textContent = "No wallpapers found";
+    const p = document.createElement("p"); p.textContent = message;
+    empty.append(title, p); grid.appendChild(empty); return;
+  }
+  items.forEach(w => grid.appendChild(card(w)));
+}
+function renderBrowse() {
+  const feed = $("verticalWallpaperFeed"); if (!feed) return;
+  feed.classList.add("browse-feed");
+  feed.replaceChildren();
+  const items = state.wallpapers.filter(w => state.category === "All" || w.category === state.category);
+  document.querySelectorAll("[data-browse-category]").forEach(button => {
+    button.classList.toggle("selected", button.dataset.browseCategory === state.category);
+  });
+  if (!items.length) {
+    const empty = document.createElement("div"); empty.className = "empty-state";
+    empty.innerHTML = "<h3>No wallpapers published in this category yet.</h3><p>Use the admin dashboard to upload your first wallpaper.</p>";
+    feed.appendChild(empty); return;
+  }
+  items.forEach(w => {
+    const reel = document.createElement("article"); reel.className = "browse-reel";
+    reel.innerHTML = `<div class="browse-reel-backdrop"></div><button type="button" class="browse-reel-image-button" aria-label="View wallpaper"><img class="browse-reel-image" alt="${escapeHTML(w.title)}"></button><div class="browse-reel-shade"></div><div class="browse-reel-details"><h2>${escapeHTML(w.title)}</h2><p>${escapeHTML(w.description || "Beautiful wallpaper for your screen.")}</p><small>${escapeHTML(w.category || "Wallpaper")}</small></div><div class="browse-reel-actions"><button type="button" class="reel-action-button" aria-label="Save wallpaper">${state.favourites.has(w.id) ? "♥" : "♡"}</button><button type="button" class="reel-action-button" aria-label="View wallpaper">↗</button></div>`;
+    reel.querySelector(".browse-reel-backdrop").style.backgroundImage = `url(${JSON.stringify(imageFor(w))})`;
+    reel.querySelector("img").src = imageFor(w);
+    reel.querySelector(".browse-reel-image-button").addEventListener("click", () => showDetail(w));
+    reel.querySelectorAll(".reel-action-button")[0].addEventListener("click", () => toggleFavourite(w));
+    reel.querySelectorAll(".reel-action-button")[1].addEventListener("click", () => showDetail(w));
+    feed.appendChild(reel);
+  });
+}
+function recentIds() { return listFromStorage(VIEWED_KEY); }
+function registerView(id) {
+  saveList(VIEWED_KEY, [id, ...recentIds().filter(existing => existing !== id)].slice(0, 12));
+  renderRecentlyViewed();
+}
+function renderRecentlyViewed() {
+  const ids = recentIds();
+  const recent = ids.map(id => state.wallpapers.find(w => w.id === id)).filter(Boolean);
+  renderGrid("recentlyViewedGrid", recent, "Wallpapers you open will appear here.");
+}
+function renderHistory() {
+  const list = $("searchHistoryList"); if (!list) return;
+  list.replaceChildren();
+  const history = listFromStorage(HISTORY_KEY);
+  if (!history.length) { list.textContent = "Your recent searches will appear here."; return; }
+  history.forEach(term => {
+    const button = document.createElement("button"); button.type = "button";
+    button.className = "category-pill"; button.textContent = term;
+    button.addEventListener("click", () => { $("searchInput").value = term; renderSearch(); navigate("search"); });
+    list.appendChild(button);
+  });
+}
+function recordHistory(term) {
+  const value = term.trim(); if (value.length < 2) return;
+  saveList(HISTORY_KEY, [value, ...listFromStorage(HISTORY_KEY).filter(x => x.toLowerCase() !== value.toLowerCase())].slice(0, 10));
+  renderHistory();
+}
+function renderSearch() {
+  const term = $("searchInput")?.value.trim().toLowerCase() || "";
+  if ($("searchClear")) $("searchClear").hidden = !term;
+  const results = term ? state.wallpapers.filter(w => `${w.title || ""} ${w.category || ""} ${w.description || ""}`.toLowerCase().includes(term)) : [];
+  $("searchResultCount").textContent = term ? `${results.length} result${results.length === 1 ? "" : "s"}` : "";
+  renderGrid("searchWallpaperGrid", results, term ? "Try a different keyword." : "Type a keyword to find wallpapers.");
+}
+function renderSaved() {
+  const saved = state.wallpapers.filter(w => state.favourites.has(w.id));
+  $("savedCount").textContent = `${saved.length} saved wallpaper${saved.length === 1 ? "" : "s"}`;
+  renderGrid("savedWallpaperGrid", saved, state.user ? "Save a wallpaper to see it here." : "Sign in to save your favourites.");
+}
+function renderAll() {
+  renderGrid("homeWallpaperGrid", state.wallpapers.slice(0, 8), "Your latest uploads will appear here.");
+  renderBrowse(); renderSaved(); renderRecentlyViewed();
+  renderGrid("recommendedGrid", state.wallpapers.slice(0, 8), "Recommendations will appear when wallpapers are uploaded.");
+  renderSearch(); renderHistory();
+}
+async function toggleFavourite(w) {
+  if (!state.user) { authMode("signin"); openModal("authModal"); notify("Sign in to save wallpapers."); return; }
+  const saved = state.favourites.has(w.id);
+  const query = saved
+    ? supabase.from("favourites").delete().eq("user_id", state.user.id).eq("wallpaper_id", w.id)
+    : supabase.from("favourites").insert({ user_id: state.user.id, wallpaper_id: w.id });
+  const { error } = await query;
+  if (error) { notify(`Could not update favourites: ${error.message}`); return; }
+  if (saved) state.favourites.delete(w.id); else state.favourites.add(w.id);
+  notify(saved ? "Removed from saved wallpapers." : "Wallpaper saved.");
+  renderAll(); if (state.detail?.id === w.id) updateDetailFavourite();
+}
+function updateDetailFavourite() {
+  if (!state.detail) return;
+  $("detailFavourite").textContent = state.favourites.has(state.detail.id) ? "♥ Saved" : "♡ Save";
+}
+function showDetail(w) {
+  state.detail = w;
+  $("detailImage").src = imageFor(w);
+  $("detailImage").alt = w.title || "Wallpaper";
+  $("detailTitle").textContent = w.title || "Untitled";
+  $("detailCategory").textContent = w.category || "Wallpaper";
+  $("detailDescription").textContent = w.description || "Download the original image.";
+  const download = $("downloadButton");
+  download.href = imageFor(w);
+  download.download = `${(w.title || "wallpaper").replace(/[^a-z0-9_-]/gi, "-")}.jpg`;
+  updateDetailFavourite(); registerView(w.id); openModal("detailModal");
+}
+async function refreshSession() {
+  const { data, error } = await supabase.auth.getSession();
+  if (error) console.warn("Session check failed:", error);
+  state.user = data?.session?.user || null;
+  updateAccount(); await loadFavourites(); renderAll();
+}
+function bindEvents() {
+  // Main navigation, including both the header and mobile bottom navigation.
+  document.addEventListener("click", e => {
+    const nav = e.target.closest("[data-screen]");
+    if (nav) { e.preventDefault(); navigate(nav.dataset.screen); }
+    const category = e.target.closest(".home-category[data-category]");
+    if (category) { state.category = category.dataset.category; navigate("browse"); }
+    const browseCategory = e.target.closest("[data-browse-category]");
+    if (browseCategory) { state.category = browseCategory.dataset.browseCategory; renderBrowse(); }
+  });
+  $("homeMenuToggle")?.addEventListener("click", () => setMenu($("siteMenu").classList.contains("hidden")));
+  $("bottomMenuButton")?.addEventListener("click", () => setMenu($("siteMenu").classList.contains("hidden")));
+  $("menuClose")?.addEventListener("click", () => setMenu(false));
+  $("menuScrim")?.addEventListener("click", () => setMenu(false));
+  document.addEventListener("keydown", e => { if (e.key === "Escape") { setMenu(false); document.querySelectorAll(".modal-backdrop:not(.hidden)").forEach(x => closeModal(x.id)); } });
+  document.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () => closeModal(button.dataset.close)));
+  document.querySelectorAll(".modal-backdrop").forEach(backdrop => backdrop.addEventListener("click", e => { if (e.target === backdrop) closeModal(backdrop.id); }));
+  $("authOpen")?.addEventListener("click", () => { authMode("signin"); openModal("authModal"); });
+  $("profileButton")?.addEventListener("click", () => openModal("accountModal"));
+  document.querySelectorAll("[data-mode]").forEach(button => button.addEventListener("click", () => authMode(button.dataset.mode)));
+  $("authForm")?.addEventListener("submit", async e => {
+    e.preventDefault();
+    const email = $("emailInput").value.trim(), password = $("passwordInput").value;
+    const username = $("usernameInput").value.trim();
+    const button = $("authSubmit"); button.disabled = true;
+    try {
+      if (state.mode === "signup") {
+        if (username.length < 2) throw new Error("Choose a username with at least 2 characters.");
+        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { username, display_name: username } } });
+        if (error) throw error;
+        notify(data.session ? "Account created." : "Check your email to confirm your account.");
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        notify("Signed in successfully.");
+      }
+      closeModal("authModal"); $("authForm").reset(); await refreshSession();
+    } catch (err) { notify(err.message); }
+    finally { button.disabled = false; }
+  });
+  $("googleSignIn")?.addEventListener("click", async () => {
+    const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname } });
+    if (error) notify(error.message);
+  });
+  $("signOutButton")?.addEventListener("click", async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) notify(error.message);
+    else { closeModal("accountModal"); notify("Signed out."); await refreshSession(); }
+  });
+  $("myFavouritesButton")?.addEventListener("click", () => { closeModal("accountModal"); navigate("saved"); });
+  $("savedSignInButton")?.addEventListener("click", () => { authMode("signin"); openModal("authModal"); });
+  $("adminDashboardButton")?.addEventListener("click", () => {
+    if (!isAdmin()) { notify("Admin access required."); return; }
+    closeModal("accountModal"); openModal("adminModal");
+  });
+  $("uploadForm")?.addEventListener("submit", async e => {
+    e.preventDefault();
+    if (!isAdmin()) { notify("Admin access required."); return; }
+    const file = $("wallpaperFile").files[0];
+    if (!file) { notify("Choose an image first."); return; }
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) { notify("Only JPG, PNG and WebP are supported."); return; }
+    if (file.size > 20 * 1024 * 1024) { notify("The image must be 20 MB or smaller."); return; }
+    const title = $("wallpaperTitle").value.trim(); if (!title) return;
+    const uploadButton = $("publishButton"); uploadButton.disabled = true;
+    uploadButton.textContent = "Publishing...";
+    const path = `${state.user.id}/${Date.now()}-${file.name.replace(/[^a-z0-9._-]/gi, "_")}`;
+    try {
+      const { error: uploadError } = await supabase.storage.from("wallpapers").upload(path, file, { upsert: false, contentType: file.type });
+      if (uploadError) throw uploadError;
+      const { data } = supabase.storage.from("wallpapers").getPublicUrl(path);
+      const { error: insertError } = await supabase.from("wallpapers").insert({
+        title, category: $("wallpaperCategory").value,
+        description: $("wallpaperDescription").value.trim(),
+        image_url: data.publicUrl, storage_path: path, created_by: state.user.id
+      });
+      if (insertError) { await supabase.storage.from("wallpapers").remove([path]); throw insertError; }
+      $("uploadForm").reset(); closeModal("adminModal"); notify("Wallpaper published!"); await loadWallpapers();
+    } catch (err) { console.error(err); notify(`Upload failed: ${err.message}`); }
+    finally { uploadButton.disabled = false; uploadButton.innerHTML = "Publish wallpaper <span>↗</span>"; }
+  });
+  $("detailFavourite")?.addEventListener("click", () => { if (state.detail) toggleFavourite(state.detail); });
+  $("downloadButton")?.addEventListener("click", async () => {
+    if (!state.detail) return;
+    const { error } = await supabase.rpc("increment_wallpaper_downloads", { p_wallpaper_id: state.detail.id });
+    if (error) console.warn("Could not increment download count:", error);
+  });
+  $("searchInput")?.addEventListener("input", renderSearch);
+  $("searchInput")?.addEventListener("keydown", e => { if (e.key === "Enter") recordHistory($("searchInput").value); });
+  $("searchInput")?.addEventListener("blur", () => recordHistory($("searchInput").value));
+  $("searchClear")?.addEventListener("click", () => { $("searchInput").value = ""; renderSearch(); $("searchInput").focus(); });
+  document.querySelectorAll("[data-search-term]").forEach(button => button.addEventListener("click", () => {
+    $("searchInput").value = button.dataset.searchTerm; recordHistory(button.dataset.searchTerm); renderSearch(); navigate("search");
+  }));
+  $("clearSearchHistory")?.addEventListener("click", () => { saveList(HISTORY_KEY, []); renderHistory(); notify("Search history cleared."); });
+  supabase.auth.onAuthStateChange(() => setTimeout(() => refreshSession().catch(console.error), 0));
+}
 
-async function loadWallpapers(){try{const {data,error}=await supabase.from("wallpapers").select("*").order("created_at",{ascending:false});if(error)throw error;wallpapers=(data||[]).map(w=>({...w,imageUrl:w.image_url,storagePath:w.storage_path}));}catch(e){console.warn("Could not load Supabase wallpapers:",e);wallpapers=[]}if(!wallpapers.length)wallpapers=demoWallpapers;await renderWallpapers()}
-async function getFavouriteIds(){if(!currentUser)return new Set();try{const {data,error}=await supabase.from("favourites").select("wallpaper_id").eq("user_id",currentUser.id);if(error)throw error;return new Set((data||[]).map(x=>x.wallpaper_id))}catch(e){console.warn(e);return new Set()}}
-async function renderWallpapers(){const grid=$("wallpaperGrid");if(!grid)return;grid.innerHTML='<div class="loading-state"><div class="loader"></div><span>Loading the collection...</span></div>';let favs=await getFavouriteIds();let list=[...wallpapers];if(showFavourites){list=list.filter(w=>favs.has(w.id))}else if(activeCategory!=="All"){list=list.filter(w=>w.category===activeCategory)}const term=$("searchInput").value.trim().toLowerCase();if(term)list=list.filter(w=>(w.title||"").toLowerCase().includes(term)||(w.category||"").toLowerCase().includes(term)||(w.description||"").toLowerCase().includes(term));const sort=$("sortSelect").value;if(sort==="popular")list.sort((a,b)=>(b.downloads||0)-(a.downloads||0));if(sort==="az")list.sort((a,b)=>(a.title||"").localeCompare(b.title||""));$("resultCount").textContent=`${list.length} ${list.length===1?"wallpaper":"wallpapers"} found`;grid.innerHTML="";$("emptyState").classList.toggle("hidden",list.length>0);grid.classList.toggle("hidden",list.length===0);for(const w of list){const card=document.createElement("article");card.className="wallpaper-card";const saved=favs.has(w.id);card.innerHTML=`<div class="wallpaper-thumb"><img loading="lazy" src="${escapeAttr(w.imageUrl||"")}" alt="${escapeAttr(w.title||"Wallpaper")}"><div class="card-overlay"><button class="quick-download" type="button">↓ Quick view</button><button class="favourite-button ${saved?"saved":""}" type="button" aria-label="Toggle favourite">${saved?"♥":"♡"}</button></div></div><div class="card-info"><div class="card-info-top"><h3>${escapeHtml(w.title||"Untitled")}</h3><span class="card-category">${escapeHtml(w.category||"Wallpaper")}</span></div><p>${Number(w.downloads||0).toLocaleString()} downloads · Original quality</p></div>`;card.querySelector(".wallpaper-thumb").addEventListener("click",()=>openDetail(w));card.querySelector(".quick-download").addEventListener("click",e=>{e.stopPropagation();openDetail(w)});card.querySelector(".favourite-button").addEventListener("click",e=>{e.stopPropagation();toggleFavourite(w)});grid.appendChild(card)}}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}function escapeAttr(s){return escapeHtml(s)}
-async function toggleFavourite(w){if(!currentUser){notify("Sign in to save favourites.");openModal("authModal");return}if(w.demo){notify("Demo wallpapers are previews. Save favourites after real wallpapers are published.");return}try{const {data,error}=await supabase.from("favourites").select("wallpaper_id").eq("user_id",currentUser.id).eq("wallpaper_id",w.id).maybeSingle();if(error)throw error;if(data){const res=await supabase.from("favourites").delete().eq("user_id",currentUser.id).eq("wallpaper_id",w.id);if(res.error)throw res.error;notify("Removed from favourites.")}else{const res=await supabase.from("favourites").insert({user_id:currentUser.id,wallpaper_id:w.id});if(res.error)throw res.error;notify("Added to favourites.")}if(activeWallpaper?.id===w.id)updateDetailFavourite();await renderWallpapers()}catch(e){notify("Could not update favourites: "+e.message)}}
-async function openDetail(w){activeWallpaper=w;$("detailImage").src=w.imageUrl;$("detailImage").alt=w.title||"Wallpaper";$("detailTitle").textContent=w.title||"Wallpaper";$("detailCategory").textContent=w.category||"Wallpaper";$("detailDescription").textContent=w.description||"High-quality wallpaper for your screen.";const link=$("downloadButton");if(w.demo){link.href="#";link.removeAttribute("download");link.onclick=e=>{e.preventDefault();notify("Preview only. Published wallpapers download in original quality.")}}else{link.href=w.imageUrl+"?download="+encodeURIComponent((w.title||"wallpaper").replace(/[^a-z0-9-_]/gi,"_")+".jpg");link.download=(w.title||"wallpaper").toLowerCase().replace(/[^a-z0-9]+/g,"-")+".jpg";link.onclick=async()=>{const {error}=await supabase.rpc("increment_wallpaper_downloads",{p_wallpaper_id:w.id});if(error)console.warn(error);else w.downloads=(w.downloads||0)+1}}await updateDetailFavourite();openModal("detailModal")}
-async function updateDetailFavourite(){if(!activeWallpaper)return;const favs=await getFavouriteIds();const saved=favs.has(activeWallpaper.id);$("detailFavourite").textContent=saved?"♥ Saved":"♡ Save";$("detailFavourite").classList.toggle("saved",saved)}
-$("detailFavourite").addEventListener("click",()=>activeWallpaper&&toggleFavourite(activeWallpaper));
-
-$("wallpaperFile").addEventListener("change",()=>{const f=$("wallpaperFile").files[0];if(!f)return;if(f.size>20*1024*1024){notify("Please choose an image under 20 MB.");$("wallpaperFile").value="";return}const url=URL.createObjectURL(f);$("previewImage").src=url;$("uploadPreview").classList.remove("hidden")});
-$("removePreview").addEventListener("click",()=>{$("wallpaperFile").value="";$("uploadPreview").classList.add("hidden")});
-$("uploadForm").addEventListener("submit",async e=>{e.preventDefault();if(!currentUser||!isAdmin()){notify("Admin access required.");return}const file=$("wallpaperFile").files[0];if(!file){notify("Choose a wallpaper image first.");return}const allowed=["image/jpeg","image/png","image/webp"];if(!allowed.includes(file.type)){notify("Only JPG, PNG and WebP images are allowed.");return}const button=$("publishButton");button.disabled=true;button.textContent="Uploading...";try{const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");const path=`${currentUser.id}/${Date.now()}-${safeName}`;const {error:uploadError}=await supabase.storage.from("wallpapers").upload(path,file,{cacheControl:"3600",upsert:false,contentType:file.type});if(uploadError)throw uploadError;const {data:{publicUrl}}=supabase.storage.from("wallpapers").getPublicUrl(path);const {error:insertError}=await supabase.from("wallpapers").insert({title:$("wallpaperTitle").value.trim(),category:$("wallpaperCategory").value,description:$("wallpaperDescription").value.trim(),image_url:publicUrl,storage_path:path,downloads:0,created_by:currentUser.id});if(insertError)throw insertError;notify("Wallpaper published successfully!");$("uploadForm").reset();$("uploadPreview").classList.add("hidden");closeModal("adminModal");await loadWallpapers()}catch(err){console.error(err);notify("Upload failed: "+err.message)}finally{button.disabled=false;button.innerHTML='Publish wallpaper <span>↗</span>'}});
-refreshSession();
-loadWallpapers();
+bindEvents();
+authMode("signin");
+setMenu(false);
+navigate("home");
+Promise.all([refreshSession(), loadWallpapers()]).catch(err => { console.error("Site initialization error:", err); notify("Something went wrong loading the site."); });
