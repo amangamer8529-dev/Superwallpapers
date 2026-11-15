@@ -1,7 +1,9 @@
+
 (() => {
   const toggle = document.getElementById('homeMenuToggle');
   const menu = document.getElementById('siteMenu');
   const closeButton = document.getElementById('menuClose');
+
   if (!toggle || !menu) return;
 
   const closeMenu = () => {
@@ -18,8 +20,12 @@
 
   toggle.addEventListener('click', (event) => {
     event.stopPropagation();
-    if (menu.classList.contains('hidden')) openMenu();
-    else closeMenu();
+
+    if (menu.classList.contains('hidden')) {
+      openMenu();
+    } else {
+      closeMenu();
+    }
   });
 
   closeButton?.addEventListener('click', closeMenu);
@@ -27,32 +33,41 @@
   menu.querySelectorAll('[data-menu-category]').forEach((button) => {
     button.addEventListener('click', () => {
       const category = button.dataset.menuCategory;
-      const existingFilter = document.querySelector(`.category-pill[data-category="${category}"]`);
+
+      const filter = document.querySelector(
+        `.category-pill[data-category="${category}"]`
+      );
+
       closeMenu();
-      if (existingFilter) {
-        existingFilter.click();
-        document.getElementById('wallpapers')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (filter) {
+        filter.click();
+
+        document.getElementById('wallpapers')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
       }
     });
   });
 
   menu.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => closeMenu());
-  });
-
-  document.getElementById('menuFavourites')?.addEventListener('click', (event) => {
-    event.preventDefault();
-    closeMenu();
-    document.getElementById('favouritesNav')?.click();
+    link.addEventListener('click', closeMenu);
   });
 
   document.addEventListener('click', (event) => {
-    if (!menu.classList.contains('hidden') && !menu.contains(event.target) && !toggle.contains(event.target)) {
+    if (
+      !menu.classList.contains('hidden') &&
+      !menu.contains(event.target) &&
+      !toggle.contains(event.target)
+    ) {
       closeMenu();
     }
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMenu();
+    if (event.key === 'Escape') {
+      closeMenu();
+    }
   });
 })();
