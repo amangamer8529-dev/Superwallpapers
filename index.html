@@ -1,475 +1,120 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07101d">
-  <meta name="description" content="Superwallpapers - discover beautiful wallpapers for your screen.">
-  <title>Superwallpapers</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#070b16">
+  <meta name="description" content="Discover beautiful free wallpapers. Find your next screen aesthetic on Superwallpapers.">
+  <title>Superwallpapers — Your screen, reimagined</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="homepage-redesign.css">
-  <link rel="stylesheet" href="wallpaper-experience.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="modern.css?v=20261115-2">
 </head>
-
 <body>
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
+  <svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16.2 16.2 5 5"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.7 5.8a5.3 5.3 0 0 0-7.5 0L12 7l-1.2-1.2a5.3 5.3 0 1 0-7.5 7.5L12 22l8.7-8.7a5.3 5.3 0 0 0 0-7.5Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m5 5 14 14M19 5 5 19"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 19 19 5M7 5h12v12"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></symbol>
+  </svg>
 
-  <!-- HEADER -->
-  <header class="topbar">
-    <a class="brand" href="#home" aria-label="Superwallpapers Home">
-      <span class="brand-mark"><span></span><span></span><span></span></span>
-      <span>SUPER<span class="brand-blue">WALLPAPERS</span></span>
+  <div class="site-ambient" aria-hidden="true"></div>
+  <header class="site-header" id="siteHeader">
+    <a class="brand" href="#home" data-nav="home" aria-label="Superwallpapers home">
+      <span class="brand-icon"><i></i><i></i><i></i></span>
+      <span>SUPER<span>WALLPAPERS</span></span>
     </a>
-
-    <nav class="desktop-nav">
-      <button class="nav-link active" data-screen="home">Home</button>
-      <button class="nav-link" data-screen="browse">Browse</button>
-      <button class="nav-link" data-screen="search">Search</button>
-      <button class="nav-link" data-screen="saved">Saved</button>
+    <nav class="header-links" aria-label="Desktop navigation">
+      <button type="button" data-nav="home" class="header-link is-active">Home</button>
+      <button type="button" data-nav="browse" class="header-link">Explore</button>
+      <button type="button" data-nav="search" class="header-link">Search</button>
+      <button type="button" data-nav="saved" class="header-link">Saved</button>
     </nav>
-
     <div class="header-actions">
-      <button class="user-button" id="authOpen" type="button">
-        <span class="user-dot"></span>
-        <span id="authButtonText">Sign in</span>
-      </button>
-
-      <button class="avatar hidden" id="profileButton" type="button">S</button>
-
-      <button class="menu-toggle" id="homeMenuToggle"
-        type="button"
-        aria-label="Open menu"
-        aria-expanded="false"
-        aria-controls="siteMenu">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="profile-pill" id="accountButton" type="button"><svg><use href="#i-user"/></svg><span id="accountButtonText">Sign in</span></button>
+      <button class="header-menu-button glass-button" id="headerMenuButton" type="button" aria-label="Open menu" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
     </div>
   </header>
 
-  <!-- MENU BACKDROP -->
-  <div class="menu-scrim" id="menuScrim"></div>
-
-  <!-- MENU -->
-  <aside class="site-menu hidden" id="siteMenu">
-    <div class="menu-heading">
-      <div>
-        <span class="menu-kicker">SUPERWALLPAPERS</span>
-        <h2>Navigation</h2>
+  <main id="mainContent">
+    <section class="page is-active" data-page="home" id="home" aria-label="Homepage">
+      <div class="hero shell">
+        <div class="hero-image" aria-hidden="true"></div><div class="hero-film" aria-hidden="true"></div>
+        <div class="hero-content">
+          <div class="eyebrow hero-eyebrow"><span class="eyebrow-dot"></span> THE WALLPAPER UNIVERSE</div>
+          <h1>Your screen.<br><em>Your world.</em></h1>
+          <p>A little magic every time you unlock. Discover stunning wallpapers made for the mood you're in.</p>
+          <div class="hero-cta">
+            <button class="button-primary" type="button" data-nav="browse">Explore wallpapers <svg><use href="#i-arrow"/></svg></button>
+            <button class="button-quiet" type="button" id="randomWallpaperButton"><svg><use href="#i-sparkle"/></svg> Surprise me</button>
+          </div>
+          <div class="hero-chips"><span>✦ Curated collection</span><span>↗ Original quality</span><span>♡ Free to discover</span></div>
+        </div>
+        <span class="hero-side-label" aria-hidden="true">THE ART OF YOUR SCREEN · 001</span>
       </div>
-      <button class="menu-close" id="menuClose" type="button">×</button>
-    </div>
 
-    <div class="menu-primary-nav">
-      <button class="menu-action" data-screen="home">
-        <span class="menu-action-icon">⌂</span>
-        <span><strong>Home</strong><small>Your wallpaper homepage</small></span>
-        <span class="menu-arrow">↗</span>
-      </button>
-
-      <button class="menu-action" data-screen="browse">
-        <span class="menu-action-icon">▣</span>
-        <span><strong>Browse</strong><small>Discover wallpapers</small></span>
-        <span class="menu-arrow">↗</span>
-      </button>
-
-      <button class="menu-action" data-screen="search">
-        <span class="menu-action-icon">⌕</span>
-        <span><strong>Search</strong><small>Find your next wallpaper</small></span>
-        <span class="menu-arrow">↗</span>
-      </button>
-
-      <button class="menu-action" data-screen="saved">
-        <span class="menu-action-icon">♡</span>
-        <span><strong>Saved</strong><small>Your favourite wallpapers</small></span>
-        <span class="menu-arrow">↗</span>
-      </button>
-    </div>
-
-    <div class="menu-section-label">INFORMATION</div>
-
-    <div class="menu-category-list">
-      <a href="about.html">About Us</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="copyright-dmca.html">Copyright / DMCA</a>
-    </div>
-  </aside>
-
-  <main id="appMain">
-
-    <!-- HOME SCREEN -->
-    <section class="app-screen active" id="screen-home" data-screen-panel="home">
-
-      <section class="hero" id="home">
-        <div class="hero-copy">
-          <div class="eyebrow">
-            <span class="pulse"></span>
-            YOUR SCREEN, YOUR STYLE
-          </div>
-
-          <h1>Give your screen<br>a <span>new feeling.</span></h1>
-
-          <p>
-            Discover beautiful wallpapers for your phone.
-            Explore anime, nature, AMOLED, gaming and more.
-          </p>
-
-          <div class="hero-actions">
-            <button class="primary-button" data-screen="browse">
-              Explore wallpapers <span>↗</span>
-            </button>
-            <span class="hero-note">✦ Free wallpaper discovery</span>
-          </div>
-
-          <div class="hero-stats">
-            <div><strong>4K</strong><span>crisp detail</span></div>
-            <i></i>
-            <div><strong>Free</strong><span>to explore</span></div>
-            <i></i>
-            <div><strong>Explore</strong><span>your style</span></div>
-          </div>
+      <section class="content-section shell category-section" id="categories">
+        <div class="section-head"><div><div class="eyebrow">FIND YOUR VIBE</div><h2>Explore <span>worlds.</span></h2><p>One swipe, a whole new aesthetic.</p></div><div class="section-controls"><button class="small-arrow" id="categoryPrev" type="button" aria-label="Scroll categories left"><svg><use href="#i-left"/></svg></button><button class="small-arrow" id="categoryNext" type="button" aria-label="Scroll categories right"><svg><use href="#i-right"/></svg></button></div></div>
+        <div class="category-rail" id="categoryRail" tabindex="0" aria-label="Wallpaper categories, scroll horizontally">
+          <button class="category-card cat-anime" type="button" data-category="Anime"><span class="category-number">01 / WORLD</span><strong>Anime</strong><span class="category-bottom">Enter the story <svg><use href="#i-arrow"/></svg></span></button>
+          <button class="category-card cat-nature" type="button" data-category="Nature"><span class="category-number">02 / WORLD</span><strong>Nature</strong><span class="category-bottom">Find your calm <svg><use href="#i-arrow"/></svg></span></button>
+          <button class="category-card cat-amoled" type="button" data-category="AMOLED"><span class="category-number">03 / WORLD</span><strong>AMOLED</strong><span class="category-bottom">Beyond the dark <svg><use href="#i-arrow"/></svg></span></button>
+          <button class="category-card cat-cars" type="button" data-category="Cars"><span class="category-number">04 / WORLD</span><strong>Cars</strong><span class="category-bottom">Chase the rush <svg><use href="#i-arrow"/></svg></span></button>
+          <button class="category-card cat-gaming" type="button" data-category="Gaming"><span class="category-number">05 / WORLD</span><strong>Gaming</strong><span class="category-bottom">Level up <svg><use href="#i-arrow"/></svg></span></button>
+          <button class="category-card cat-space" type="button" data-category="Space"><span class="category-number">06 / WORLD</span><strong>Space</strong><span class="category-bottom">Go beyond <svg><use href="#i-arrow"/></svg></span></button>
+          <button class="category-card cat-abstract" type="button" data-category="Abstract"><span class="category-number">07 / WORLD</span><strong>Abstract</strong><span class="category-bottom">Think different <svg><use href="#i-arrow"/></svg></span></button>
+          <button class="category-card cat-minimal" type="button" data-category="Minimal"><span class="category-number">08 / WORLD</span><strong>Minimal</strong><span class="category-bottom">Less, but better <svg><use href="#i-arrow"/></svg></span></button>
         </div>
-
-        <div class="hero-art">
-          <div class="hero-glow"></div>
-
-          <div class="art-card art-back">
-            <img
-              src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1100&q=90"
-              alt="Sunrise landscape">
-          </div>
-
-          <div class="art-card art-front">
-            <img
-              src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1100&q=90"
-              alt="Starry night sky">
-          </div>
-        </div>
+        <div class="rail-hint"><span class="hint-line"></span><span>SWIPE TO DISCOVER MORE</span><svg><use href="#i-right"/></svg></div>
       </section>
 
-      <section class="home-content">
-        <div class="section-heading">
-          <div>
-            <div class="eyebrow">DISCOVER SOMETHING NEW</div>
-            <h2>Explore <span>categories.</span></h2>
-          </div>
-          <button class="text-button" data-screen="browse">Browse all ↗</button>
-        </div>
-
-        <div class="home-category-grid">
-          <button class="home-category" data-category="Anime">
-            <span>✦</span><strong>Anime</strong>
-          </button>
-          <button class="home-category" data-category="Nature">
-            <span>⌁</span><strong>Nature</strong>
-          </button>
-          <button class="home-category" data-category="AMOLED">
-            <span>◐</span><strong>AMOLED</strong>
-          </button>
-          <button class="home-category" data-category="Cars">
-            <span>⌁</span><strong>Cars</strong>
-          </button>
-          <button class="home-category" data-category="Gaming">
-            <span>▣</span><strong>Gaming</strong>
-          </button>
-          <button class="home-category" data-category="Space">
-            <span>☄</span><strong>Space</strong>
-          </button>
-        </div>
-      </section>
-
-      <section class="home-content">
-        <div class="section-heading">
-          <div>
-            <div class="eyebrow">HAND-PICKED COLLECTION</div>
-            <h2>Latest <span>wallpapers.</span></h2>
-          </div>
-          <button class="text-button" data-screen="browse">See all ↗</button>
-        </div>
-
-        <div class="wallpaper-grid" id="homeWallpaperGrid">
-          <div class="loading-state">Loading wallpapers...</div>
-        </div>
-      </section>
+      <section class="content-section shell featured-section"><div class="section-head"><div><div class="eyebrow">FRESH FOR YOUR SCREEN</div><h2>Worth a <span>second look.</span></h2><p>Find something you didn't know you needed.</p></div><button class="text-link" type="button" data-nav="browse">View all <svg><use href="#i-arrow"/></svg></button></div><div class="wall-grid home-grid" id="homeGrid"><div class="skeleton-card"></div><div class="skeleton-card"></div></div></section>
+      <div class="outro shell"><div><span class="eyebrow">MAKE IT YOURS</span><h2>Never settle for<br>an ordinary screen.</h2><p>There's a wallpaper for every version of you.</p></div><button class="button-primary" type="button" data-nav="browse">Find my wallpaper <svg><use href="#i-arrow"/></svg></button></div>
     </section>
 
-    <!-- BROWSE SCREEN -->
-    <section class="app-screen" id="screen-browse" data-screen-panel="browse">
-      <div class="screen-heading">
-        <div class="eyebrow">DISCOVER YOUR NEXT WALLPAPER</div>
-        <h1>Wallpaper <span>feed.</span></h1>
-        <p>Scroll vertically to explore the collection.</p>
-      </div>
-
-      <div class="browse-category-strip" id="browseCategories">
-        <button class="category-pill selected" data-browse-category="All">For you</button>
-        <button class="category-pill" data-browse-category="Anime">Anime</button>
-        <button class="category-pill" data-browse-category="Nature">Nature</button>
-        <button class="category-pill" data-browse-category="AMOLED">AMOLED</button>
-        <button class="category-pill" data-browse-category="Cars">Cars</button>
-        <button class="category-pill" data-browse-category="Gaming">Gaming</button>
-        <button class="category-pill" data-browse-category="Space">Space</button>
-      </div>
-
-      <div class="vertical-wallpaper-feed" id="verticalWallpaperFeed">
-        <div class="loading-state">Loading your wallpaper feed...</div>
-      </div>
+    <section class="page shell interior-page" data-page="browse" aria-label="Browse wallpapers" hidden>
+      <div class="page-intro"><div class="eyebrow">YOUR NEXT OBSESSION</div><h1>Explore <span>the feed.</span></h1><p>Scroll, discover, fall in love with your next wallpaper.</p></div>
+      <div class="feed-toolbar"><div class="feed-pills" id="browsePills" aria-label="Filter wallpapers by category"><button class="filter-pill is-active" type="button" data-filter="All">For you</button><button class="filter-pill" type="button" data-filter="Anime">Anime</button><button class="filter-pill" type="button" data-filter="Nature">Nature</button><button class="filter-pill" type="button" data-filter="AMOLED">AMOLED</button><button class="filter-pill" type="button" data-filter="Cars">Cars</button><button class="filter-pill" type="button" data-filter="Gaming">Gaming</button><button class="filter-pill" type="button" data-filter="Space">Space</button><button class="filter-pill" type="button" data-filter="Abstract">Abstract</button><button class="filter-pill" type="button" data-filter="Minimal">Minimal</button></div><div class="feed-meta"><span id="browseCount">Discover your next favourite</span><label class="sort-wrap"><span>Sort</span><select id="sortSelect" aria-label="Sort wallpapers"><option value="newest">Newest</option><option value="popular">Popular</option><option value="az">A–Z</option></select></label></div></div>
+      <div class="wall-grid browse-grid" id="browseGrid"><div class="skeleton-card"></div><div class="skeleton-card"></div></div>
     </section>
 
-    <!-- SEARCH SCREEN -->
-    <section class="app-screen" id="screen-search" data-screen-panel="search">
-      <div class="screen-heading">
-        <div class="eyebrow">FIND YOUR STYLE</div>
-        <h1>Search <span>wallpapers.</span></h1>
-        <p>Find wallpapers and explore recommendations.</p>
-      </div>
-
-      <div class="large-search-box">
-        <span>⌕</span>
-        <input id="searchInput" type="search"
-          placeholder="Search anime, nature, Naruto..."
-          autocomplete="off">
-        <button id="searchClear" type="button" aria-label="Clear search" hidden>×</button>
-      </div>
-
-      <div class="search-suggestions">
-        <span>POPULAR SEARCHES</span>
-        <button data-search-term="Anime">Anime</button>
-        <button data-search-term="Naruto">Naruto</button>
-        <button data-search-term="AMOLED">AMOLED</button>
-        <button data-search-term="Nature">Nature</button>
-        <button data-search-term="Space">Space</button>
-      </div>
-
-      <section class="search-history-section" id="searchHistorySection">
-        <div class="section-heading">
-          <div>
-            <h2>Recent <span>searches.</span></h2>
-          </div>
-          <button class="text-button" id="clearSearchHistory">Clear history</button>
-        </div>
-        <div class="search-history-list" id="searchHistoryList">
-          <p class="muted">Your recent searches will appear here.</p>
-        </div>
-      </section>
-
-      <section class="search-history-section">
-        <div class="section-heading">
-          <div>
-            <h2>Recently <span>viewed.</span></h2>
-          </div>
-        </div>
-        <div class="wallpaper-grid compact-grid" id="recentlyViewedGrid">
-          <p class="muted">Wallpapers you open will appear here.</p>
-        </div>
-      </section>
-
-      <section class="search-history-section">
-        <div class="section-heading">
-          <div>
-            <h2>Recommended <span>for you.</span></h2>
-          </div>
-        </div>
-        <div class="wallpaper-grid" id="recommendedGrid">
-          <p class="muted">Recommendations will appear here.</p>
-        </div>
-      </section>
-
-      <section class="search-history-section">
-        <div class="section-heading">
-          <div>
-            <h2>Search <span>results.</span></h2>
-          </div>
-          <span id="searchResultCount"></span>
-        </div>
-        <div class="wallpaper-grid" id="searchWallpaperGrid">
-          <p class="muted">Start searching to find wallpapers.</p>
-        </div>
-      </section>
+    <section class="page shell interior-page" data-page="search" aria-label="Search wallpapers" hidden>
+      <div class="page-intro search-intro"><div class="eyebrow">EVERY VIBE IS HERE</div><h1>Find your <span>feeling.</span></h1><p>The perfect wallpaper is a search away.</p></div>
+      <div class="search-hero"><div class="search-field"><svg><use href="#i-search"/></svg><input id="searchInput" type="search" autocomplete="off" aria-label="Search wallpapers" placeholder="Try anime, midnight, nature..."/><button id="searchClear" class="search-clear" type="button" aria-label="Clear search" hidden><svg><use href="#i-close"/></svg></button></div><div class="search-chips"><span>POPULAR</span><button data-search="Anime" type="button">Anime</button><button data-search="AMOLED" type="button">AMOLED</button><button data-search="Nature" type="button">Nature</button><button data-search="Space" type="button">Space</button></div></div>
+      <div class="search-block" id="searchHistorySection" hidden><div class="section-head compact"><div><div class="eyebrow">PICK UP WHERE YOU LEFT OFF</div><h2>Recent <span>searches.</span></h2></div><button class="text-link" id="clearHistory" type="button">Clear</button></div><div class="history-list" id="historyList"></div></div>
+      <div class="search-block"><div class="section-head compact"><div><div class="eyebrow" id="searchEyebrow">EXPLORE THE POSSIBILITIES</div><h2 id="searchHeading">Made for <span>you.</span></h2></div><span class="muted-count" id="searchCount"></span></div><div class="wall-grid browse-grid" id="searchGrid"><div class="skeleton-card"></div></div></div>
+      <div class="search-block" id="recentlyViewedSection" hidden><div class="section-head compact"><div><div class="eyebrow">GOOD TASTE, REMEMBERED</div><h2>Recently <span>viewed.</span></h2></div></div><div class="wall-grid small-grid" id="recentlyViewedGrid"></div></div>
     </section>
 
-    <!-- SAVED SCREEN -->
-    <section class="app-screen" id="screen-saved" data-screen-panel="saved">
-      <div class="screen-heading">
-        <div class="eyebrow">YOUR PERSONAL COLLECTION</div>
-        <h1>Saved <span>wallpapers.</span></h1>
-        <p>Your favourite wallpapers in one place.</p>
-      </div>
-
-      <div class="saved-toolbar">
-        <span id="savedCount">Your collection</span>
-        <button class="text-button" id="savedSignInButton">Sign in to sync ↗</button>
-      </div>
-
-      <div class="wallpaper-grid" id="savedWallpaperGrid">
-        <div class="loading-state">Loading saved wallpapers...</div>
-      </div>
-    </section>
+    <section class="page shell interior-page" data-page="saved" aria-label="Saved wallpapers" hidden><div class="page-intro"><div class="eyebrow">YOUR PERSONAL COLLECTION</div><h1>Saved with <span>love.</span></h1><p>All your favourites, right where you left them.</p></div><div class="saved-toolbar"><span id="savedCount">Your collection</span><button class="text-link" id="savedSignIn" type="button" hidden>Sign in to sync <svg><use href="#i-arrow"/></svg></button></div><div class="wall-grid browse-grid" id="savedGrid"></div></section>
   </main>
 
-  <!-- BOTTOM NAVIGATION -->
-  <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
-    <button class="bottom-nav-item is-active" data-screen="home" aria-label="Home">
-      <span class="bottom-icon">⌂</span>
-      <span>Home</span>
-    </button>
+  <footer class="site-footer shell"><span>SUPER<span>WALLPAPERS</span></span><div><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a><a href="copyright-dmca.html">DMCA</a></div><small>Made for screens that deserve more.</small></footer>
 
-    <button class="bottom-nav-item" data-screen="browse" aria-label="Browse">
-      <span class="bottom-icon">▣</span>
-      <span>Browse</span>
-    </button>
+  <nav class="bottom-dock" id="bottomDock" aria-label="Swipeable main navigation"><div class="dock-shine" id="dockShine" aria-hidden="true"></div><button type="button" class="dock-tab is-active" data-tab="home" aria-label="Home"><svg><use href="#i-home"/></svg><span>Home</span></button><button type="button" class="dock-tab" data-tab="browse" aria-label="Browse"><svg><use href="#i-grid"/></svg><span>Browse</span></button><button type="button" class="dock-tab" data-tab="search" aria-label="Search"><svg><use href="#i-search"/></svg><span>Search</span></button><button type="button" class="dock-tab" data-tab="saved" aria-label="Saved"><svg><use href="#i-heart"/></svg><span>Saved</span></button><button type="button" class="dock-tab" data-tab="menu" aria-label="Menu"><svg><use href="#i-menu"/></svg><span>Menu</span></button></nav>
 
-    <button class="bottom-nav-item" data-screen="search" aria-label="Search">
-      <span class="bottom-icon">⌕</span>
-      <span>Search</span>
-    </button>
+  <div class="menu-scrim" id="menuScrim" hidden></div>
+  <aside class="menu-panel" id="menuPanel" aria-hidden="true" aria-label="Navigation menu" inert>
+    <div class="menu-head"><div><span class="eyebrow">THE EXPERIENCE</span><h2>Explore more.</h2></div><button id="closeMenu" class="icon-square" type="button" aria-label="Close menu"><svg><use href="#i-close"/></svg></button></div>
+    <div class="menu-nav"><button data-nav="home" type="button"><svg><use href="#i-home"/></svg><span>Home</span><svg><use href="#i-right"/></svg></button><button data-nav="browse" type="button"><svg><use href="#i-grid"/></svg><span>All wallpapers</span><svg><use href="#i-right"/></svg></button><button data-nav="search" type="button"><svg><use href="#i-search"/></svg><span>Search</span><svg><use href="#i-right"/></svg></button><button data-nav="saved" type="button"><svg><use href="#i-heart"/></svg><span>Saved</span><svg><use href="#i-right"/></svg></button></div>
+    <div class="menu-divider"></div><div class="eyebrow menu-section-title">EXPLORE BY CATEGORY</div><div class="menu-categories"><button data-category="Anime" type="button">Anime <span>↗</span></button><button data-category="Nature" type="button">Nature <span>↗</span></button><button data-category="AMOLED" type="button">AMOLED <span>↗</span></button><button data-category="Cars" type="button">Cars <span>↗</span></button><button data-category="Gaming" type="button">Gaming <span>↗</span></button><button data-category="Space" type="button">Space <span>↗</span></button></div>
+    <div class="menu-divider"></div><div class="menu-footer-links"><a href="about.html">About us</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy</a><a href="copyright-dmca.html">Copyright / DMCA</a></div>
+  </aside>
 
-    <button class="bottom-nav-item" data-screen="saved" aria-label="Saved">
-      <span class="bottom-icon">♡</span>
-      <span>Saved</span>
-    </button>
+  <div class="modal-backdrop" id="authModal" role="presentation" hidden><section class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle"><button type="button" class="modal-x" data-close="authModal" aria-label="Close"><svg><use href="#i-close"/></svg></button><div class="modal-symbol"><svg><use href="#i-sparkle"/></svg></div><div class="eyebrow">WELCOME TO YOUR WORLD</div><h2 id="authTitle">Good to see <span>you.</span></h2><p class="modal-copy">Sign in to save the wallpapers you love.</p><div class="auth-switch"><button type="button" class="is-active" data-auth-mode="signin">Sign in</button><button type="button" data-auth-mode="signup">Create account</button></div><form id="authForm"><label class="input-label" id="usernameLabel" for="usernameInput" hidden>Username<input id="usernameInput" placeholder="How should we call you?" autocomplete="nickname"></label><label class="input-label" for="emailInput">Email<input type="email" id="emailInput" placeholder="you@example.com" required autocomplete="email"></label><label class="input-label" for="passwordInput">Password<input type="password" id="passwordInput" placeholder="At least 6 characters" required minlength="6" autocomplete="current-password"></label><button class="button-primary button-full" id="authSubmit" type="submit">Sign in <svg><use href="#i-arrow"/></svg></button></form><div class="or-divider"><span></span>or<span></span></div><button type="button" class="google-signin" id="googleButton">Continue with Google</button></section></div>
 
-    <button class="bottom-nav-item" id="bottomMenuButton" aria-label="Menu">
-      <span class="bottom-icon">☰</span>
-      <span>Menu</span>
-    </button>
-  </nav>
+  <div class="modal-backdrop" id="accountModal" role="presentation" hidden><section class="modal account-modal" role="dialog" aria-modal="true" aria-labelledby="accountName"><button type="button" class="modal-x" data-close="accountModal" aria-label="Close"><svg><use href="#i-close"/></svg></button><div class="account-avatar" id="accountAvatar">S</div><div class="eyebrow">YOUR SPACE</div><h2 id="accountName">My account</h2><p id="accountEmail" class="modal-copy"></p><button type="button" class="account-row" id="accountSaved"><svg><use href="#i-heart"/></svg> My saved wallpapers <svg><use href="#i-right"/></svg></button><button type="button" class="account-row" id="adminOpen" hidden><svg><use href="#i-upload"/></svg> Admin dashboard <svg><use href="#i-right"/></svg></button><button type="button" class="sign-out" id="signOut">Sign out</button></section></div>
 
-  <!-- AUTH MODAL -->
-  <div class="modal-backdrop hidden" id="authModal">
-    <section class="modal auth-modal" role="dialog" aria-modal="true">
-      <button class="modal-close" type="button" data-close="authModal">×</button>
+  <div class="modal-backdrop" id="adminModal" role="presentation" hidden><section class="modal admin-modal" role="dialog" aria-modal="true" aria-labelledby="adminTitle"><button type="button" class="modal-x" data-close="adminModal" aria-label="Close"><svg><use href="#i-close"/></svg></button><div class="eyebrow">ADMIN ONLY</div><h2 id="adminTitle">Publish <span>wallpaper.</span></h2><p class="modal-copy">Upload an original image to your public collection.</p><form id="uploadForm"><label class="upload-zone" for="wallpaperFile"><svg><use href="#i-upload"/></svg><strong>Choose your wallpaper</strong><small>JPG, PNG or WebP · up to 20MB</small><input id="wallpaperFile" type="file" accept="image/jpeg,image/png,image/webp" required></label><img id="uploadPreview" class="upload-preview" alt="Selected wallpaper preview" hidden><label class="input-label" for="wallpaperTitle">Title<input id="wallpaperTitle" maxlength="100" required placeholder="A name for your wallpaper"></label><label class="input-label" for="wallpaperCategory">Category<select id="wallpaperCategory"><option>Anime</option><option>Nature</option><option>AMOLED</option><option>Cars</option><option>Gaming</option><option>Space</option><option>Abstract</option><option>Minimal</option></select></label><label class="input-label" for="wallpaperDescription">Description (optional)<input id="wallpaperDescription" maxlength="300" placeholder="Add a little detail..."></label><button class="button-primary button-full" type="submit" id="publishButton">Publish wallpaper <svg><use href="#i-arrow"/></svg></button></form></section></div>
 
-      <div class="eyebrow">WELCOME TO SUPERWALLPAPERS</div>
-      <h2 id="authTitle">Welcome <span>back.</span></h2>
-      <p class="modal-desc">Sign in or create an account to save wallpapers.</p>
-
-      <div class="auth-tabs">
-        <button class="auth-tab active" data-mode="signin">Sign in</button>
-        <button class="auth-tab" data-mode="signup">Create account</button>
-      </div>
-
-      <form id="authForm">
-        <label class="field-label" for="usernameInput">Username</label>
-        <input class="form-input" id="usernameInput" placeholder="Your username">
-
-        <label class="field-label" for="emailInput">Email address</label>
-        <input class="form-input" id="emailInput" type="email"
-          placeholder="you@example.com" required>
-
-        <label class="field-label" for="passwordInput">Password</label>
-        <input class="form-input" id="passwordInput" type="password"
-          placeholder="Password" required>
-
-        <button class="primary-button full-button" id="authSubmit" type="submit">
-          Sign in <span>↗</span>
-        </button>
-      </form>
-
-      <div class="or-divider"><span></span> OR <span></span></div>
-
-      <button class="google-button" id="googleSignIn" type="button">
-        Continue with Google
-      </button>
-    </section>
-  </div>
-
-  <!-- ACCOUNT MODAL -->
-  <div class="modal-backdrop hidden" id="accountModal">
-    <section class="modal account-modal" role="dialog" aria-modal="true">
-      <button class="modal-close" type="button" data-close="accountModal">×</button>
-      <div class="account-avatar" id="accountAvatar">S</div>
-      <h2 id="accountName">Your account</h2>
-      <p id="accountEmail"></p>
-
-      <button class="secondary-button hidden" id="adminDashboardButton">
-        Admin dashboard
-      </button>
-      <button class="secondary-button" id="myFavouritesButton">
-        My favourites
-      </button>
-      <button class="secondary-button danger-button" id="signOutButton">
-        Sign out
-      </button>
-    </section>
-  </div>
-
-  <!-- ADMIN MODAL -->
-  <div class="modal-backdrop hidden" id="adminModal">
-    <section class="modal admin-modal" role="dialog" aria-modal="true">
-      <button class="modal-close" type="button" data-close="adminModal">×</button>
-
-      <div class="eyebrow">ADMINISTRATION</div>
-      <h2>Admin <span>dashboard.</span></h2>
-
-      <form id="uploadForm" class="upload-form">
-        <label class="field-label" for="wallpaperFile">Choose wallpaper</label>
-        <input id="wallpaperFile" type="file"
-          accept="image/jpeg,image/png,image/webp" required>
-
-        <label class="field-label" for="wallpaperTitle">Title</label>
-        <input class="form-input" id="wallpaperTitle" required>
-
-        <label class="field-label" for="wallpaperCategory">Category</label>
-        <select class="form-input" id="wallpaperCategory">
-          <option>Anime</option>
-          <option>Nature</option>
-          <option>AMOLED</option>
-          <option>Cars</option>
-          <option>Gaming</option>
-          <option>Abstract</option>
-          <option>Space</option>
-          <option>Minimal</option>
-        </select>
-
-        <label class="field-label" for="wallpaperDescription">Description</label>
-        <input class="form-input" id="wallpaperDescription">
-
-        <button class="primary-button full-button" id="publishButton" type="submit">
-          Publish wallpaper <span>↗</span>
-        </button>
-      </form>
-    </section>
-  </div>
-
-  <!-- WALLPAPER DETAIL MODAL -->
-  <div class="modal-backdrop hidden" id="detailModal">
-    <section class="modal detail-modal" role="dialog" aria-modal="true">
-      <button class="modal-close" type="button" data-close="detailModal">×</button>
-      <img class="detail-image" id="detailImage" alt="Wallpaper preview">
-
-      <div class="detail-content">
-        <span id="detailCategory"></span>
-        <h2 id="detailTitle"></h2>
-        <p id="detailDescription"></p>
-
-        <div class="detail-actions">
-          <a class="primary-button" id="downloadButton" href="#" download>
-            Download wallpaper ↓
-          </a>
-          <button class="favourite-button" id="detailFavourite">♡ Save</button>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <!-- EXISTING MENU HANDLER -->
-  <script src="homepage-menu.js" defer></script>
-
-  <!-- NEW SCREEN / FEED HANDLER -->
-  <script src="wallpaper-experience.js" defer></script>
-
-  <!-- EXISTING SUPABASE APPLICATION -->
-  <script type="module" src="app.js"></script>
-</body>
-          </html>
-          
+  <div class="modal-backdrop detail-backdrop" id="detailModal" role="presentation" hidden><section class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><button type="button" class="detail-close" data-close="detailModal" aria-label="Close preview"><svg><use href="#i-close"/></svg></button><div class="detail-picture"><img id="detailImage" alt="Wallpaper preview"></div><div class="detail-info"><div class="eyebrow" id="detailCategory">WALLPAPER</div><h2 id="detailTitle"></h2><p id="detailDescription"></p><div class="detail-buttons"><a href="#" id="detailDownload" class="button-primary" target="_blank" rel="noopener"><svg><use href="#i-download"/></
