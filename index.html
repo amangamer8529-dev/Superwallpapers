@@ -1,12 +1,12 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#07101d">
-  <meta name="description" content="Superwallpapers — discover and download beautiful high-resolution wallpapers.">
-  <title>Superwallpapers — Wallpapers for your screen</title>
+  <meta name="description" content="Superwallpapers - discover beautiful wallpapers for your screen.">
+  <title>Superwallpapers</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,6 +14,7 @@
 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="homepage-redesign.css">
+  <link rel="stylesheet" href="wallpaper-experience.css">
 </head>
 
 <body>
@@ -22,355 +23,352 @@
 
   <!-- HEADER -->
   <header class="topbar">
-    <a class="brand" href="#explore" aria-label="Superwallpapers home">
+    <a class="brand" href="#home" aria-label="Superwallpapers Home">
       <span class="brand-mark"><span></span><span></span><span></span></span>
       <span>SUPER<span class="brand-blue">WALLPAPERS</span></span>
     </a>
 
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a class="nav-link active" href="#explore">Explore</a>
-      <a class="nav-link" href="#categories">Categories</a>
-      <a class="nav-link" href="#favourites" id="favouritesNav">Favourites</a>
+    <nav class="desktop-nav">
+      <button class="nav-link active" data-screen="home">Home</button>
+      <button class="nav-link" data-screen="browse">Browse</button>
+      <button class="nav-link" data-screen="search">Search</button>
+      <button class="nav-link" data-screen="saved">Saved</button>
     </nav>
 
     <div class="header-actions">
-      <button class="icon-button mobile-search-toggle" id="mobileSearchToggle" type="button" aria-label="Search wallpapers">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="m20 20-4-4"></path>
-        </svg>
-      </button>
-
       <button class="user-button" id="authOpen" type="button">
         <span class="user-dot"></span>
         <span id="authButtonText">Sign in</span>
       </button>
 
-      <button class="avatar hidden" id="profileButton" type="button" aria-label="Account menu">S</button>
+      <button class="avatar hidden" id="profileButton" type="button">S</button>
 
-      <button class="menu-toggle" id="homeMenuToggle" type="button"
-        aria-label="Open navigation menu"
+      <button class="menu-toggle" id="homeMenuToggle"
+        type="button"
+        aria-label="Open menu"
         aria-expanded="false"
         aria-controls="siteMenu">
         <span></span><span></span><span></span>
       </button>
     </div>
-
-    <!-- SITE MENU -->
-    <aside class="site-menu hidden" id="siteMenu" aria-label="Website navigation">
-      <div class="menu-heading">
-        <div>
-          <span class="menu-kicker">SUPERWALLPAPERS</span>
-          <h2>Explore</h2>
-        </div>
-        <button class="menu-close" id="menuClose" type="button" aria-label="Close menu">×</button>
-      </div>
-
-      <nav class="menu-primary-nav">
-        <a class="menu-action menu-home" href="#explore">
-          <span class="menu-action-icon">⌂</span>
-          <span><strong>Home</strong><small>Back to homepage</small></span>
-          <span class="menu-arrow">↗</span>
-        </a>
-
-        <a class="menu-action" href="#wallpapers">
-          <span class="menu-action-icon">▦</span>
-          <span><strong>All wallpapers</strong><small>Explore the collection</small></span>
-          <span class="menu-arrow">↗</span>
-        </a>
-
-        <a class="menu-action" href="mailto:amangamer8529@gmail.com?subject=Superwallpapers%20Feedback">
-          <span class="menu-action-icon">✉</span>
-          <span><strong>Feedback</strong><small>Send your suggestions</small></span>
-          <span class="menu-arrow">↗</span>
-        </a>
-      </nav>
-
-      <div class="menu-section-label">BROWSE CATEGORIES</div>
-
-      <div class="menu-category-list">
-        <button type="button" data-menu-category="All"><span>✦</span> All wallpapers</button>
-        <button type="button" data-menu-category="Anime"><span>✧</span> Anime</button>
-        <button type="button" data-menu-category="Nature"><span>⌁</span> Nature</button>
-        <button type="button" data-menu-category="AMOLED"><span>◐</span> AMOLED</button>
-        <button type="button" data-menu-category="Cars"><span>⌁</span> Cars</button>
-        <button type="button" data-menu-category="Gaming"><span>▣</span> Gaming</button>
-        <button type="button" data-menu-category="Abstract"><span>✳</span> Abstract</button>
-        <button type="button" data-menu-category="Space"><span>☄</span> Space</button>
-      </div>
-    </aside>
   </header>
 
-  <main>
-    <!-- HERO -->
-    <section class="hero" id="explore">
-      <div class="hero-copy">
-        <div class="eyebrow">
-          <span class="pulse"></span>
-          YOUR SCREEN, YOUR STYLE
-        </div>
+  <!-- MENU BACKDROP -->
+  <div class="menu-scrim" id="menuScrim"></div>
 
-        <h1>Give your screen<br>a <span>new feeling.</span></h1>
-
-        <p>
-          Explore a hand-picked world of wallpapers.
-          From peaceful nature to bold anime art,
-          find the look that feels like you.
-        </p>
-
-        <div class="hero-actions">
-          <a class="primary-button" href="#wallpapers">
-            Explore wallpapers <span>↗</span>
-          </a>
-          <span class="hero-note">
-            <span class="sparkle">✦</span>
-            Free downloads · Made for your screen
-          </span>
-        </div>
-
-        <div class="hero-stats">
-          <div><strong>4K</strong><span>crisp detail</span></div>
-          <i></i>
-          <div><strong>Free</strong><span>to explore</span></div>
-          <i></i>
-          <div><strong>Your vibe</strong><span>your wallpaper</span></div>
-        </div>
+  <!-- MENU -->
+  <aside class="site-menu hidden" id="siteMenu">
+    <div class="menu-heading">
+      <div>
+        <span class="menu-kicker">SUPERWALLPAPERS</span>
+        <h2>Navigation</h2>
       </div>
-
-      <div class="hero-art">
-        <div class="hero-glow"></div>
-
-        <div class="art-card art-back">
-          <img
-            src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1100&q=90"
-            alt="Golden sunrise over mountains">
-        </div>
-
-        <div class="art-card art-front">
-          <img
-            src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1100&q=90"
-            alt="Starry night sky">
-        </div>
-
-        <div class="art-chip">
-          <span class="chip-icon">✦</span>
-          <span>
-            <b>Find your next favourite</b>
-            <small>Fresh inspiration for every screen</small>
-          </span>
-        </div>
-
-        <div class="art-index">01 <span>/ 02</span></div>
-      </div>
-
-      <div class="hero-bottom">
-        <span>SCROLL TO DISCOVER</span>
-        <span class="scroll-line"></span>
-        <span>SUPERWALLPAPERS</span>
-      </div>
-    </section>
-
-    <!-- CATEGORIES -->
-    <div class="category-filter-proxy" id="categories" aria-label="Wallpaper categories">
-      <button class="category-pill selected" type="button" data-category="All">All wallpapers</button>
-      <button class="category-pill" type="button" data-category="Anime">Anime</button>
-      <button class="category-pill" type="button" data-category="Nature">Nature</button>
-      <button class="category-pill" type="button" data-category="AMOLED">AMOLED</button>
-      <button class="category-pill" type="button" data-category="Cars">Cars</button>
-      <button class="category-pill" type="button" data-category="Gaming">Gaming</button>
-      <button class="category-pill" type="button" data-category="Abstract">Abstract</button>
-      <button class="category-pill" type="button" data-category="Space">Space</button>
+      <button class="menu-close" id="menuClose" type="button">×</button>
     </div>
 
-    <!-- WALLPAPER GALLERY -->
-    <section class="wallpaper-section" id="wallpapers">
-      <div class="section-heading gallery-heading">
-        <div>
-          <div class="eyebrow">THE WALLPAPER COLLECTION</div>
-          <h2 id="galleryTitle">Fresh <span>wallpapers.</span></h2>
-          <p class="section-subtitle" id="gallerySubtitle">
-            A little inspiration for your lock screen and home screen.
-          </p>
-        </div>
+    <div class="menu-primary-nav">
+      <button class="menu-action" data-screen="home">
+        <span class="menu-action-icon">⌂</span>
+        <span><strong>Home</strong><small>Your wallpaper homepage</small></span>
+        <span class="menu-arrow">↗</span>
+      </button>
 
-        <div class="gallery-tools">
-          <div class="search-box">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="11" cy="11" r="7"></circle>
-              <path d="m20 20-4-4"></path>
-            </svg>
+      <button class="menu-action" data-screen="browse">
+        <span class="menu-action-icon">▣</span>
+        <span><strong>Browse</strong><small>Discover wallpapers</small></span>
+        <span class="menu-arrow">↗</span>
+      </button>
 
-            <input
-              id="searchInput"
-              type="search"
-              placeholder="Find wallpapers..."
-              aria-label="Search wallpapers"
-              autocomplete="off">
+      <button class="menu-action" data-screen="search">
+        <span class="menu-action-icon">⌕</span>
+        <span><strong>Search</strong><small>Find your next wallpaper</small></span>
+        <span class="menu-arrow">↗</span>
+      </button>
 
-            <button
-              class="search-clear"
-              id="searchClear"
-              type="button"
-              aria-label="Clear search"
-              hidden>×</button>
+      <button class="menu-action" data-screen="saved">
+        <span class="menu-action-icon">♡</span>
+        <span><strong>Saved</strong><small>Your favourite wallpapers</small></span>
+        <span class="menu-arrow">↗</span>
+      </button>
+    </div>
+
+    <div class="menu-section-label">INFORMATION</div>
+
+    <div class="menu-category-list">
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="copyright-dmca.html">Copyright / DMCA</a>
+    </div>
+  </aside>
+
+  <main id="appMain">
+
+    <!-- HOME SCREEN -->
+    <section class="app-screen active" id="screen-home" data-screen-panel="home">
+
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="pulse"></span>
+            YOUR SCREEN, YOUR STYLE
           </div>
 
-          <select id="sortSelect" aria-label="Sort wallpapers">
-            <option value="newest">Newest first</option>
-            <option value="popular">Most downloaded</option>
-            <option value="az">A to Z</option>
-          </select>
+          <h1>Give your screen<br>a <span>new feeling.</span></h1>
+
+          <p>
+            Discover beautiful wallpapers for your phone.
+            Explore anime, nature, AMOLED, gaming and more.
+          </p>
+
+          <div class="hero-actions">
+            <button class="primary-button" data-screen="browse">
+              Explore wallpapers <span>↗</span>
+            </button>
+            <span class="hero-note">✦ Free wallpaper discovery</span>
+          </div>
+
+          <div class="hero-stats">
+            <div><strong>4K</strong><span>crisp detail</span></div>
+            <i></i>
+            <div><strong>Free</strong><span>to explore</span></div>
+            <i></i>
+            <div><strong>Explore</strong><span>your style</span></div>
+          </div>
         </div>
-      </div>
 
-      <!-- QUICK SEARCH -->
-      <div class="search-suggestions">
-        <span>QUICK SEARCH</span>
-        <button type="button" data-search-term="Anime">Anime</button>
-        <button type="button" data-search-term="Naruto">Naruto</button>
-        <button type="button" data-search-term="AMOLED">AMOLED</button>
-        <button type="button" data-search-term="Nature">Nature</button>
-        <button type="button" data-search-term="Space">Space</button>
-      </div>
+        <div class="hero-art">
+          <div class="hero-glow"></div>
 
-      <div class="filter-row">
-        <span id="resultCount">Featured collection</span>
-        <span class="quality-tag"><span></span> HIGH RESOLUTION</span>
-      </div>
+          <div class="art-card art-back">
+            <img
+              src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1100&q=90"
+              alt="Sunrise landscape">
+          </div>
 
-      <div class="wallpaper-grid" id="wallpaperGrid">
-        <div class="loading-state">
-          <div class="loader"></div>
-          <span>Loading the collection...</span>
+          <div class="art-card art-front">
+            <img
+              src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1100&q=90"
+              alt="Starry night sky">
+          </div>
         </div>
+      </section>
+
+      <section class="home-content">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">DISCOVER SOMETHING NEW</div>
+            <h2>Explore <span>categories.</span></h2>
+          </div>
+          <button class="text-button" data-screen="browse">Browse all ↗</button>
+        </div>
+
+        <div class="home-category-grid">
+          <button class="home-category" data-category="Anime">
+            <span>✦</span><strong>Anime</strong>
+          </button>
+          <button class="home-category" data-category="Nature">
+            <span>⌁</span><strong>Nature</strong>
+          </button>
+          <button class="home-category" data-category="AMOLED">
+            <span>◐</span><strong>AMOLED</strong>
+          </button>
+          <button class="home-category" data-category="Cars">
+            <span>⌁</span><strong>Cars</strong>
+          </button>
+          <button class="home-category" data-category="Gaming">
+            <span>▣</span><strong>Gaming</strong>
+          </button>
+          <button class="home-category" data-category="Space">
+            <span>☄</span><strong>Space</strong>
+          </button>
+        </div>
+      </section>
+
+      <section class="home-content">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">HAND-PICKED COLLECTION</div>
+            <h2>Latest <span>wallpapers.</span></h2>
+          </div>
+          <button class="text-button" data-screen="browse">See all ↗</button>
+        </div>
+
+        <div class="wallpaper-grid" id="homeWallpaperGrid">
+          <div class="loading-state">Loading wallpapers...</div>
+        </div>
+      </section>
+    </section>
+
+    <!-- BROWSE SCREEN -->
+    <section class="app-screen" id="screen-browse" data-screen-panel="browse">
+      <div class="screen-heading">
+        <div class="eyebrow">DISCOVER YOUR NEXT WALLPAPER</div>
+        <h1>Wallpaper <span>feed.</span></h1>
+        <p>Scroll vertically to explore the collection.</p>
       </div>
 
-      <div class="empty-state hidden" id="emptyState">
-        <div class="empty-icon">⌕</div>
-        <h3>No wallpapers found</h3>
-        <p>Try another search or category.</p>
-        <button class="text-button" id="clearFilters" type="button">
-          Clear filters ↗
-        </button>
+      <div class="browse-category-strip" id="browseCategories">
+        <button class="category-pill selected" data-browse-category="All">For you</button>
+        <button class="category-pill" data-browse-category="Anime">Anime</button>
+        <button class="category-pill" data-browse-category="Nature">Nature</button>
+        <button class="category-pill" data-browse-category="AMOLED">AMOLED</button>
+        <button class="category-pill" data-browse-category="Cars">Cars</button>
+        <button class="category-pill" data-browse-category="Gaming">Gaming</button>
+        <button class="category-pill" data-browse-category="Space">Space</button>
+      </div>
+
+      <div class="vertical-wallpaper-feed" id="verticalWallpaperFeed">
+        <div class="loading-state">Loading your wallpaper feed...</div>
       </div>
     </section>
 
-    <!-- JOIN BANNER -->
-    <section class="join-banner">
-      <div>
-        <div class="eyebrow">YOUR WALLPAPER COLLECTION</div>
-        <h2>Save the ones you <span>love.</span></h2>
-        <p>Sign in to keep your favourite wallpapers together.</p>
+    <!-- SEARCH SCREEN -->
+    <section class="app-screen" id="screen-search" data-screen-panel="search">
+      <div class="screen-heading">
+        <div class="eyebrow">FIND YOUR STYLE</div>
+        <h1>Search <span>wallpapers.</span></h1>
+        <p>Find wallpapers and explore recommendations.</p>
       </div>
 
-      <button class="primary-button" id="joinButton" type="button">
-        Create a free account <span>↗</span>
-      </button>
+      <div class="large-search-box">
+        <span>⌕</span>
+        <input id="searchInput" type="search"
+          placeholder="Search anime, nature, Naruto..."
+          autocomplete="off">
+        <button id="searchClear" type="button" aria-label="Clear search" hidden>×</button>
+      </div>
 
-      <div class="banner-orb"></div>
+      <div class="search-suggestions">
+        <span>POPULAR SEARCHES</span>
+        <button data-search-term="Anime">Anime</button>
+        <button data-search-term="Naruto">Naruto</button>
+        <button data-search-term="AMOLED">AMOLED</button>
+        <button data-search-term="Nature">Nature</button>
+        <button data-search-term="Space">Space</button>
+      </div>
+
+      <section class="search-history-section" id="searchHistorySection">
+        <div class="section-heading">
+          <div>
+            <h2>Recent <span>searches.</span></h2>
+          </div>
+          <button class="text-button" id="clearSearchHistory">Clear history</button>
+        </div>
+        <div class="search-history-list" id="searchHistoryList">
+          <p class="muted">Your recent searches will appear here.</p>
+        </div>
+      </section>
+
+      <section class="search-history-section">
+        <div class="section-heading">
+          <div>
+            <h2>Recently <span>viewed.</span></h2>
+          </div>
+        </div>
+        <div class="wallpaper-grid compact-grid" id="recentlyViewedGrid">
+          <p class="muted">Wallpapers you open will appear here.</p>
+        </div>
+      </section>
+
+      <section class="search-history-section">
+        <div class="section-heading">
+          <div>
+            <h2>Recommended <span>for you.</span></h2>
+          </div>
+        </div>
+        <div class="wallpaper-grid" id="recommendedGrid">
+          <p class="muted">Recommendations will appear here.</p>
+        </div>
+      </section>
+
+      <section class="search-history-section">
+        <div class="section-heading">
+          <div>
+            <h2>Search <span>results.</span></h2>
+          </div>
+          <span id="searchResultCount"></span>
+        </div>
+        <div class="wallpaper-grid" id="searchWallpaperGrid">
+          <p class="muted">Start searching to find wallpapers.</p>
+        </div>
+      </section>
+    </section>
+
+    <!-- SAVED SCREEN -->
+    <section class="app-screen" id="screen-saved" data-screen-panel="saved">
+      <div class="screen-heading">
+        <div class="eyebrow">YOUR PERSONAL COLLECTION</div>
+        <h1>Saved <span>wallpapers.</span></h1>
+        <p>Your favourite wallpapers in one place.</p>
+      </div>
+
+      <div class="saved-toolbar">
+        <span id="savedCount">Your collection</span>
+        <button class="text-button" id="savedSignInButton">Sign in to sync ↗</button>
+      </div>
+
+      <div class="wallpaper-grid" id="savedWallpaperGrid">
+        <div class="loading-state">Loading saved wallpapers...</div>
+      </div>
     </section>
   </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <a class="brand footer-brand" href="#explore">
-      <span class="brand-mark"><span></span><span></span><span></span></span>
-      <span>SUPER<span class="brand-blue">WALLPAPERS</span></span>
-    </a>
-
-    <span>Made for screens that deserve better.</span>
-    <span>© <span id="year"></span> Superwallpapers</span>
-  </footer>
-
-  <!-- MOBILE BOTTOM NAVIGATION -->
-  <nav class="bottom-nav" id="bottomNav" aria-label="Bottom navigation">
-    <button class="bottom-nav-item is-active" type="button"
-      data-bottom-action="home" aria-pressed="true">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="m3 10 9-7 9 7"></path>
-        <path d="M5 9v11h14V9"></path>
-        <path d="M9 20v-6h6v6"></path>
-      </svg>
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
+    <button class="bottom-nav-item is-active" data-screen="home" aria-label="Home">
+      <span class="bottom-icon">⌂</span>
       <span>Home</span>
     </button>
 
-    <button class="bottom-nav-item" type="button"
-      data-bottom-action="search" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="11" cy="11" r="7"></circle>
-        <path d="m20 20-4-4"></path>
-      </svg>
-      <span>Find</span>
-    </button>
-
-    <button class="bottom-nav-item" type="button"
-      data-bottom-action="categories" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
-        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
-      </svg>
+    <button class="bottom-nav-item" data-screen="browse" aria-label="Browse">
+      <span class="bottom-icon">▣</span>
       <span>Browse</span>
     </button>
 
-    <button class="bottom-nav-item" type="button"
-      data-bottom-action="saved" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20.8 8.7c0 5.1-8.8 10.1-8.8 10.1S3.2 13.8 3.2 8.7A4.7 4.7 0 0 1 12 6.4a4.7 4.7 0 0 1 8.8 2.3Z"></path>
-      </svg>
+    <button class="bottom-nav-item" data-screen="search" aria-label="Search">
+      <span class="bottom-icon">⌕</span>
+      <span>Search</span>
+    </button>
+
+    <button class="bottom-nav-item" data-screen="saved" aria-label="Saved">
+      <span class="bottom-icon">♡</span>
       <span>Saved</span>
     </button>
 
-    <button class="bottom-nav-item" type="button"
-      data-bottom-action="menu" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 7h16M4 12h16M4 17h16"></path>
-      </svg>
+    <button class="bottom-nav-item" id="bottomMenuButton" aria-label="Menu">
+      <span class="bottom-icon">☰</span>
       <span>Menu</span>
     </button>
   </nav>
 
-  <!-- AUTHENTICATION MODAL -->
+  <!-- AUTH MODAL -->
   <div class="modal-backdrop hidden" id="authModal">
-    <section class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-      <button class="modal-close" type="button" data-close="authModal" aria-label="Close">×</button>
+    <section class="modal auth-modal" role="dialog" aria-modal="true">
+      <button class="modal-close" type="button" data-close="authModal">×</button>
 
-      <div class="modal-brand">
-        <span class="brand-mark"><span></span><span></span><span></span></span>
-      </div>
-
-      <div class="eyebrow">WELCOME TO THE COLLECTION</div>
-      <h2 id="authTitle">Your next favourite<br><span>starts here.</span></h2>
-      <p class="modal-desc">Sign in or create an account to save your favourites.</p>
+      <div class="eyebrow">WELCOME TO SUPERWALLPAPERS</div>
+      <h2 id="authTitle">Welcome <span>back.</span></h2>
+      <p class="modal-desc">Sign in or create an account to save wallpapers.</p>
 
       <div class="auth-tabs">
-        <button class="auth-tab active" type="button" data-mode="signin">Sign in</button>
-        <button class="auth-tab" type="button" data-mode="signup">Create account</button>
+        <button class="auth-tab active" data-mode="signin">Sign in</button>
+        <button class="auth-tab" data-mode="signup">Create account</button>
       </div>
 
       <form id="authForm">
-        <label class="field-label" id="nameFieldLabel" for="usernameInput">Username</label>
-        <input class="form-input" id="usernameInput"
-          placeholder="Your username"
-          autocomplete="username">
+        <label class="field-label" for="usernameInput">Username</label>
+        <input class="form-input" id="usernameInput" placeholder="Your username">
 
         <label class="field-label" for="emailInput">Email address</label>
-        <input class="form-input" id="emailInput"
-          type="email"
-          placeholder="you@example.com"
-          required
-          autocomplete="email">
+        <input class="form-input" id="emailInput" type="email"
+          placeholder="you@example.com" required>
 
         <label class="field-label" for="passwordInput">Password</label>
-        <input class="form-input" id="passwordInput"
-          type="password"
-          placeholder="At least 6 characters"
-          required
-          minlength="6"
-          autocomplete="current-password">
+        <input class="form-input" id="passwordInput" type="password"
+          placeholder="Password" required>
 
-        <button class="primary-button full-button" type="submit" id="authSubmit">
+        <button class="primary-button full-button" id="authSubmit" type="submit">
           Sign in <span>↗</span>
         </button>
       </form>
@@ -378,75 +376,52 @@
       <div class="or-divider"><span></span> OR <span></span></div>
 
       <button class="google-button" id="googleSignIn" type="button">
-        <span class="google-g">G</span> Continue with Google
+        Continue with Google
       </button>
-
-      <p class="fine-print">
-        Your password is handled securely by Supabase Authentication.
-      </p>
     </section>
   </div>
 
   <!-- ACCOUNT MODAL -->
   <div class="modal-backdrop hidden" id="accountModal">
     <section class="modal account-modal" role="dialog" aria-modal="true">
-      <button class="modal-close" type="button" data-close="accountModal" aria-label="Close">×</button>
-
+      <button class="modal-close" type="button" data-close="accountModal">×</button>
       <div class="account-avatar" id="accountAvatar">S</div>
       <h2 id="accountName">Your account</h2>
-      <p id="accountEmail" class="muted"></p>
+      <p id="accountEmail"></p>
 
-      <div class="account-actions">
-        <button class="secondary-button hidden" id="adminDashboardButton" type="button">
-          ⚙ Admin dashboard
-        </button>
-
-        <button class="secondary-button" id="myFavouritesButton" type="button">
-          ♡ My favourites
-        </button>
-
-        <button class="secondary-button danger-button" id="signOutButton" type="button">
-          Sign out
-        </button>
-      </div>
+      <button class="secondary-button hidden" id="adminDashboardButton">
+        Admin dashboard
+      </button>
+      <button class="secondary-button" id="myFavouritesButton">
+        My favourites
+      </button>
+      <button class="secondary-button danger-button" id="signOutButton">
+        Sign out
+      </button>
     </section>
   </div>
 
-  <!-- ADMIN DASHBOARD -->
+  <!-- ADMIN MODAL -->
   <div class="modal-backdrop hidden" id="adminModal">
-    <section class="modal admin-modal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
-      <button class="modal-close" type="button" data-close="adminModal" aria-label="Close">×</button>
+    <section class="modal admin-modal" role="dialog" aria-modal="true">
+      <button class="modal-close" type="button" data-close="adminModal">×</button>
 
-      <div class="eyebrow">PRIVATE CONTROL ROOM</div>
-      <h2 id="adminTitle">Admin <span>dashboard.</span></h2>
-      <p class="modal-desc">
-        Only the configured administrator account can publish wallpapers.
-      </p>
+      <div class="eyebrow">ADMINISTRATION</div>
+      <h2>Admin <span>dashboard.</span></h2>
 
       <form id="uploadForm" class="upload-form">
-        <label class="upload-drop" for="wallpaperFile">
-          <span class="upload-symbol">↑</span>
-          <b>Choose a wallpaper</b>
-          <small>JPG, PNG or WebP · up to 20 MB</small>
-          <input id="wallpaperFile" type="file"
-            accept="image/jpeg,image/png,image/webp" required>
-        </label>
+        <label class="field-label" for="wallpaperFile">Choose wallpaper</label>
+        <input id="wallpaperFile" type="file"
+          accept="image/jpeg,image/png,image/webp" required>
 
-        <div class="upload-preview hidden" id="uploadPreview">
-          <img id="previewImage" alt="Wallpaper preview">
-          <button type="button" id="removePreview">Remove image ×</button>
-        </div>
-
-        <label class="field-label" for="wallpaperTitle">Wallpaper title</label>
-        <input class="form-input" id="wallpaperTitle"
-          placeholder="e.g. Midnight mountains"
-          required maxlength="80">
+        <label class="field-label" for="wallpaperTitle">Title</label>
+        <input class="form-input" id="wallpaperTitle" required>
 
         <label class="field-label" for="wallpaperCategory">Category</label>
         <select class="form-input" id="wallpaperCategory">
+          <option>Anime</option>
           <option>Nature</option>
           <option>AMOLED</option>
-          <option>Anime</option>
           <option>Cars</option>
           <option>Gaming</option>
           <option>Abstract</option>
@@ -454,89 +429,47 @@
           <option>Minimal</option>
         </select>
 
-        <label class="field-label" for="wallpaperDescription">Short description (optional)</label>
-        <input class="form-input" id="wallpaperDescription"
-          placeholder="A short description"
-          maxlength="180">
+        <label class="field-label" for="wallpaperDescription">Description</label>
+        <input class="form-input" id="wallpaperDescription">
 
-        <button class="primary-button full-button" type="submit" id="publishButton">
+        <button class="primary-button full-button" id="publishButton" type="submit">
           Publish wallpaper <span>↗</span>
         </button>
       </form>
-
-      <p class="admin-note">
-        Admin access is enforced by Supabase security policies.
-      </p>
     </section>
   </div>
 
-  <!-- WALLPAPER DETAIL -->
+  <!-- WALLPAPER DETAIL MODAL -->
   <div class="modal-backdrop hidden" id="detailModal">
     <section class="modal detail-modal" role="dialog" aria-modal="true">
-      <button class="modal-close light-close" type="button"
-        data-close="detailModal" aria-label="Close">×</button>
-
-      <img class="detail-image" id="detailImage" alt="Selected wallpaper">
+      <button class="modal-close" type="button" data-close="detailModal">×</button>
+      <img class="detail-image" id="detailImage" alt="Wallpaper preview">
 
       <div class="detail-content">
-        <div class="detail-meta">
-          <span class="quality-tag"><span></span> HIGH RESOLUTION</span>
-          <span id="detailCategory"></span>
-        </div>
-
+        <span id="detailCategory"></span>
         <h2 id="detailTitle"></h2>
-        <p id="detailDescription" class="muted"></p>
+        <p id="detailDescription"></p>
 
         <div class="detail-actions">
           <a class="primary-button" id="downloadButton" href="#" download>
-            Download wallpaper <span>↓</span>
+            Download wallpaper ↓
           </a>
-
-          <button class="favourite-button detail-fav" id="detailFavourite" type="button">
-            ♡ Save
-          </button>
+          <button class="favourite-button" id="detailFavourite">♡ Save</button>
         </div>
-
-        <small class="download-hint">
-          Downloads the original image uploaded by the creator.
-        </small>
       </div>
     </section>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- EXISTING MENU SCRIPT -->
+  <!-- EXISTING MENU HANDLER -->
   <script src="homepage-menu.js" defer></script>
+
+  <!-- NEW SCREEN / FEED HANDLER -->
+  <script src="wallpaper-experience.js" defer></script>
 
   <!-- EXISTING SUPABASE APPLICATION -->
   <script type="module" src="app.js"></script>
-
-  <!-- SEARCH ENHANCEMENTS: BUILT INTO INDEX -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const searchInput = document.getElementById("searchInput");
-      const searchClear = document.getElementById("searchClear");
-      const searchButtons = document.querySelectorAll("[data-search-term]");
-
-      if (!searchInput) return;
-
-      const updateClearButton = () => {
-        if (searchClear) {
-          searchClear.hidden = searchInput.value.trim().length === 0;
-        }
-      };
-
-      searchInput.addEventListener("input", updateClearButton);
-
-      searchClear?.addEventListener("click", () => {
-        searchInput.value = "";
-        searchInput.dispatchEvent(new Event("input", { bubbles: true }));
-        searchInput.focus();
-        updateClearButton();
-      });
-
-      searchButtons.forEach(button => {
-        button.addEventListener("click", () => {
-          searchI
+</body>
+          </html>
+          
