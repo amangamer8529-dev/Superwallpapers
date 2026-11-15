@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,7 +23,6 @@
       <span>SUPER<span class="brand-blue">WALLPAPERS</span></span>
     </a>
 
-    <!-- Kept for the existing favourites feature in app.js. -->
     <nav class="desktop-nav" aria-label="Main navigation">
       <a class="nav-link active" href="#explore">Explore</a>
       <a class="nav-link" href="#categories">Categories</a>
@@ -40,13 +40,37 @@
       </button>
     </div>
 
+    <!-- New vertical navigation menu -->
     <aside class="site-menu hidden" id="siteMenu" aria-label="Website navigation">
       <div class="menu-heading">
-        <div><span class="menu-kicker">QUICK ACCESS</span><h2>Explore</h2></div>
+        <div>
+          <span class="menu-kicker">QUICK ACCESS</span>
+          <h2>Explore</h2>
+        </div>
         <button class="menu-close" id="menuClose" type="button" aria-label="Close menu">×</button>
       </div>
-      <a class="menu-home" href="#explore"><span class="menu-home-icon">⌂</span><span><strong>Home</strong><small>Back to the homepage</small></span><span class="menu-arrow">↗</span></a>
-      <div class="menu-section-label">HOME · WALLPAPER CATEGORIES</div>
+
+      <nav class="menu-primary-nav" aria-label="Quick links">
+        <a class="menu-action menu-home" href="#explore">
+          <span class="menu-action-icon">⌂</span>
+          <span><strong>Home</strong><small>Back to the homepage</small></span>
+          <span class="menu-arrow">↗</span>
+        </a>
+
+        <a class="menu-action" href="#wallpapers">
+          <span class="menu-action-icon">▦</span>
+          <span><strong>All wallpapers</strong><small>Browse every wallpaper</small></span>
+          <span class="menu-arrow">↗</span>
+        </a>
+
+        <a class="menu-action" href="mailto:amangamer8529@gmail.com?subject=Superwallpapers%20Feedback">
+          <span class="menu-action-icon">✉</span>
+          <span><strong>Feedback</strong><small>Share suggestions or report problems</small></span>
+          <span class="menu-arrow">↗</span>
+        </a>
+      </nav>
+
+      <div class="menu-section-label">BROWSE BY CATEGORY</div>
       <div class="menu-category-list">
         <button type="button" data-menu-category="All"><span>✦</span> All wallpapers</button>
         <button type="button" data-menu-category="Anime"><span>✧</span> Anime</button>
@@ -56,10 +80,6 @@
         <button type="button" data-menu-category="Gaming"><span>▣</span> Gaming</button>
         <button type="button" data-menu-category="Abstract"><span>✳</span> Abstract</button>
         <button type="button" data-menu-category="Space"><span>☄</span> Space</button>
-      </div>
-      <div class="menu-bottom-links">
-        <a href="#wallpapers">Browse collection <span>↗</span></a>
-        <a href="#favourites" id="menuFavourites">My favourites <span>♡</span></a>
       </div>
     </aside>
   </header>
@@ -93,8 +113,6 @@
       <div class="hero-bottom"><span>SCROLL TO DISCOVER</span><span class="scroll-line"></span><span>SUPERWALLPAPERS</span></div>
     </section>
 
-    <!-- Invisible filter controls keep the existing gallery filtering logic intact.
-         Categories are now accessed from the top-right glass menu. -->
     <div class="category-filter-proxy" id="categories" aria-hidden="true">
       <button class="category-pill selected" data-category="All" tabindex="-1">All wallpapers</button>
       <button class="category-pill" data-category="Anime" tabindex="-1">Anime</button>
@@ -108,25 +126,57 @@
 
     <section class="wallpaper-section" id="wallpapers">
       <div class="section-heading gallery-heading">
-        <div><div class="eyebrow">THE WALLPAPER COLLECTION</div><h2 id="galleryTitle">Fresh <span>wallpapers.</span></h2><p class="section-subtitle" id="gallerySubtitle">A little inspiration for your lock screen and home screen.</p></div>
+        <div>
+          <div class="eyebrow">THE WALLPAPER COLLECTION</div>
+          <h2 id="galleryTitle">Fresh <span>wallpapers.</span></h2>
+          <p class="section-subtitle" id="gallerySubtitle">A little inspiration for your lock screen and home screen.</p>
+        </div>
         <div class="gallery-tools">
-          <label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="searchInput" type="search" placeholder="Search wallpapers..." autocomplete="off"></label>
-          <select id="sortSelect" aria-label="Sort wallpapers"><option value="newest">Newest first</option><option value="popular">Most downloaded</option><option value="az">A to Z</option></select>
+          <label class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+            <input id="searchInput" type="search" placeholder="Search wallpapers..." autocomplete="off">
+          </label>
+          <select id="sortSelect" aria-label="Sort wallpapers">
+            <option value="newest">Newest first</option>
+            <option value="popular">Most downloaded</option>
+            <option value="az">A to Z</option>
+          </select>
         </div>
       </div>
-      <div class="filter-row"><span id="resultCount">Featured collection</span><span class="quality-tag"><span></span> HIGH RESOLUTION</span></div>
-      <div class="wallpaper-grid" id="wallpaperGrid"><div class="loading-state"><div class="loader"></div><span>Loading the collection...</span></div></div>
-      <div class="empty-state hidden" id="emptyState"><div class="empty-icon">⌕</div><h3>No wallpapers found</h3><p>Try another search or category.</p><button class="text-button" id="clearFilters">Clear filters ↗</button></div>
+      <div class="filter-row">
+        <span id="resultCount">Featured collection</span>
+        <span class="quality-tag"><span></span> HIGH RESOLUTION</span>
+      </div>
+      <div class="wallpaper-grid" id="wallpaperGrid">
+        <div class="loading-state"><div class="loader"></div><span>Loading the collection...</span></div>
+      </div>
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon">⌕</div>
+        <h3>No wallpapers found</h3>
+        <p>Try another search or category.</p>
+        <button class="text-button" id="clearFilters">Clear filters ↗</button>
+      </div>
     </section>
 
     <section class="join-banner">
-      <div><div class="eyebrow">YOUR WALLPAPER COLLECTION</div><h2>Save the ones you <span>love.</span></h2><p>Sign in to keep your favourite wallpapers together.</p></div>
+      <div>
+        <div class="eyebrow">YOUR WALLPAPER COLLECTION</div>
+        <h2>Save the ones you <span>love.</span></h2>
+        <p>Sign in to keep your favourite wallpapers together.</p>
+      </div>
       <button class="primary-button" id="joinButton">Create a free account <span>↗</span></button>
       <div class="banner-orb"></div>
     </section>
   </main>
 
-  <footer><a class="brand footer-brand" href="#explore"><span class="brand-mark"><span></span><span></span><span></span></span><span>SUPER<span class="brand-blue">WALLPAPERS</span></span></a><span>Made for screens that deserve better.</span><span>© <span id="year"></span> Superwallpapers</span></footer>
+  <footer>
+    <a class="brand footer-brand" href="#explore">
+      <span class="brand-mark"><span></span><span></span><span></span></span>
+      <span>SUPER<span class="brand-blue">WALLPAPERS</span></span>
+    </a>
+    <span>Made for screens that deserve better.</span>
+    <span>© <span id="year"></span> Superwallpapers</span>
+  </footer>
 
   <!-- Authentication modal -->
   <div class="modal-backdrop hidden" id="authModal">
@@ -136,11 +186,17 @@
       <div class="eyebrow">WELCOME TO THE COLLECTION</div>
       <h2 id="authTitle">Your next favourite<br><span>starts here.</span></h2>
       <p class="modal-desc">Sign in or create an account to save your favourites.</p>
-      <div class="auth-tabs"><button class="auth-tab active" data-mode="signin">Sign in</button><button class="auth-tab" data-mode="signup">Create account</button></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-mode="signin">Sign in</button>
+        <button class="auth-tab" data-mode="signup">Create account</button>
+      </div>
       <form id="authForm">
-        <label class="field-label" id="nameFieldLabel">Username</label><input class="form-input" id="usernameInput" placeholder="Your username" autocomplete="username" />
-        <label class="field-label">Email address</label><input class="form-input" id="emailInput" type="email" placeholder="you@example.com" required autocomplete="email" />
-        <label class="field-label">Password</label><input class="form-input" id="passwordInput" type="password" placeholder="At least 6 characters" required minlength="6" autocomplete="current-password" />
+        <label class="field-label" id="nameFieldLabel">Username</label>
+        <input class="form-input" id="usernameInput" placeholder="Your username" autocomplete="username">
+        <label class="field-label">Email address</label>
+        <input class="form-input" id="emailInput" type="email" placeholder="you@example.com" required autocomplete="email">
+        <label class="field-label">Password</label>
+        <input class="form-input" id="passwordInput" type="password" placeholder="At least 6 characters" required minlength="6" autocomplete="current-password">
         <button class="primary-button full-button" type="submit" id="authSubmit">Sign in <span>↗</span></button>
       </form>
       <div class="or-divider"><span></span> OR <span></span></div>
@@ -153,8 +209,14 @@
   <div class="modal-backdrop hidden" id="accountModal">
     <section class="modal account-modal" role="dialog" aria-modal="true">
       <button class="modal-close" data-close="accountModal" aria-label="Close">×</button>
-      <div class="account-avatar" id="accountAvatar">S</div><h2 id="accountName">Your account</h2><p id="accountEmail" class="muted"></p>
-      <div class="account-actions"><button class="secondary-button hidden" id="adminDashboardButton">⚙ Admin dashboard</button><button class="secondary-button" id="myFavouritesButton">♡ My favourites</button><button class="secondary-button danger-button" id="signOutButton">Sign out</button></div>
+      <div class="account-avatar" id="accountAvatar">S</div>
+      <h2 id="accountName">Your account</h2>
+      <p id="accountEmail" class="muted"></p>
+      <div class="account-actions">
+        <button class="secondary-button hidden" id="adminDashboardButton">⚙ Admin dashboard</button>
+        <button class="secondary-button" id="myFavouritesButton">♡ My favourites</button>
+        <button class="secondary-button danger-button" id="signOutButton">Sign out</button>
+      </div>
     </section>
   </div>
 
@@ -162,14 +224,30 @@
   <div class="modal-backdrop hidden" id="adminModal">
     <section class="modal admin-modal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
       <button class="modal-close" data-close="adminModal" aria-label="Close">×</button>
-      <div class="eyebrow">PRIVATE CONTROL ROOM</div><h2 id="adminTitle">Admin <span>dashboard.</span></h2>
+      <div class="eyebrow">PRIVATE CONTROL ROOM</div>
+      <h2 id="adminTitle">Admin <span>dashboard.</span></h2>
       <p class="modal-desc">Only the configured administrator account can publish wallpapers.</p>
       <form id="uploadForm" class="upload-form">
-        <label class="upload-drop" for="wallpaperFile"><span class="upload-symbol">↑</span><b>Choose a wallpaper</b><small>JPG, PNG or WebP · up to 20 MB</small><input id="wallpaperFile" type="file" accept="image/jpeg,image/png,image/webp" required /></label>
-        <div class="upload-preview hidden" id="uploadPreview"><img id="previewImage" alt="Wallpaper preview"><button type="button" id="removePreview">Remove image ×</button></div>
-        <label class="field-label">Wallpaper title</label><input class="form-input" id="wallpaperTitle" placeholder="e.g. Midnight mountains" required maxlength="80">
-        <label class="field-label">Category</label><select class="form-input" id="wallpaperCategory"><option>Nature</option><option>AMOLED</option><option>Anime</option><option>Cars</option><option>Gaming</option><option>Abstract</option><option>Space</option><option>Minimal</option></select>
-        <label class="field-label">Short description (optional)</label><input class="form-input" id="wallpaperDescription" placeholder="A short description" maxlength="180">
+        <label class="upload-drop" for="wallpaperFile">
+          <span class="upload-symbol">↑</span>
+          <b>Choose a wallpaper</b>
+          <small>JPG, PNG or WebP · up to 20 MB</small>
+          <input id="wallpaperFile" type="file" accept="image/jpeg,image/png,image/webp" required>
+        </label>
+        <div class="upload-preview hidden" id="uploadPreview">
+          <img id="previewImage" alt="Wallpaper preview">
+          <button type="button" id="removePreview">Remove image ×</button>
+        </div>
+        <label class="field-label">Wallpaper title</label>
+        <input class="form-input" id="wallpaperTitle" placeholder="e.g. Midnight mountains" required maxlength="80">
+        <label class="field-label">Category</label>
+        <select class="form-input" id="wallpaperCategory">
+          <option>Nature</option><option>AMOLED</option><option>Anime</option>
+          <option>Cars</option><option>Gaming</option><option>Abstract</option>
+          <option>Space</option><option>Minimal</option>
+        </select>
+        <label class="field-label">Short description (optional)</label>
+        <input class="form-input" id="wallpaperDescription" placeholder="A short description" maxlength="180">
         <button class="primary-button full-button" type="submit" id="publishButton">Publish wallpaper <span>↗</span></button>
       </form>
       <p class="admin-note">Admin access is enforced by Supabase security policies, not just by hiding this dashboard.</p>
@@ -181,12 +259,26 @@
     <section class="modal detail-modal" role="dialog" aria-modal="true">
       <button class="modal-close light-close" data-close="detailModal" aria-label="Close">×</button>
       <img class="detail-image" id="detailImage" alt="Selected wallpaper">
-      <div class="detail-content"><div class="detail-meta"><span class="quality-tag"><span></span> HIGH RESOLUTION</span><span id="detailCategory"></span></div><h2 id="detailTitle"></h2><p id="detailDescription" class="muted"></p><div class="detail-actions"><a class="primary-button" id="downloadButton" href="#" download>Download wallpaper <span>↓</span></a><button class="favourite-button detail-fav" id="detailFavourite">♡ Save</button></div><small class="download-hint">Downloads the original image uploaded by the creator.</small></div>
+      <div class="detail-content">
+        <div class="detail-meta">
+          <span class="quality-tag"><span></span> HIGH RESOLUTION</span>
+          <span id="detailCategory"></span>
+        </div>
+        <h2 id="detailTitle"></h2>
+        <p id="detailDescription" class="muted"></p>
+        <div class="detail-actions">
+          <a class="primary-button" id="downloadButton" href="#" download>Download wallpaper <span>↓</span></a>
+          <button class="favourite-button detail-fav" id="detailFavourite">♡ Save</button>
+        </div>
+        <small class="download-hint">Downloads the original image uploaded by the creator.</small>
+      </div>
     </section>
   </div>
 
   <div class="toast" id="toast" role="status"></div>
+
   <script src="homepage-menu.js" defer></script>
   <script type="module" src="app.js"></script>
 </body>
-</html>
+          </html>
+        
