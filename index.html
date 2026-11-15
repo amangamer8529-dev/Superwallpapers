@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#070b14" />
+  <meta name="description" content="Superwallpapers — discover and download beautiful high-resolution wallpapers." />
+  <title>Superwallpapers — Find your next wallpaper</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Superwallpapers home">
+      <span class="brand-mark"><span></span><span></span><span></span></span>
+      <span>SUPER<span class="brand-blue">WALLPAPERS</span></span>
+    </a>
+    <nav class="desktop-nav">
+      <a class="nav-link active" href="#explore">Explore</a>
+      <a class="nav-link" href="#categories">Categories</a>
+      <a class="nav-link" href="#favourites" id="favouritesNav">Favourites</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-button mobile-search-toggle" id="mobileSearchToggle" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg></button>
+      <button class="user-button" id="authOpen"><span class="user-dot"></span><span id="authButtonText">Sign in</span></button>
+      <button class="avatar hidden" id="profileButton" aria-label="Account menu">S</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="explore">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse"></span> YOUR SCREEN, YOUR STYLE</div>
+        <h1>Make your screen<br>feel <span>extraordinary.</span></h1>
+        <p>Discover crisp, high-quality wallpapers made to give every screen a little more personality.</p>
+        <div class="hero-actions">
+          <a class="primary-button" href="#wallpapers">Explore wallpapers <span>↗</span></a>
+          <span class="hero-note"><span class="sparkle">✦</span> Free downloads. Fresh inspiration.</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Featured wallpaper collage">
+        <div class="hero-glow"></div>
+        <div class="art-card art-back"><img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=900&q=85" alt="Golden sunrise over misty mountains"></div>
+        <div class="art-card art-front"><img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=85" alt="Starry night sky"></div>
+        <div class="art-chip"><span class="chip-icon">✦</span><span><b>Wallpaper of the day</b><small>Curated for your screen</small></span></div>
+      </div>
+      <div class="hero-bottom"><span>SCROLL TO EXPLORE</span><span class="scroll-line"></span><span>01 / 04</span></div>
+    </section>
+
+    <section class="category-section" id="categories">
+      <div class="section-heading"><div><div class="eyebrow">BROWSE YOUR VIBE</div><h2>Find your <span>wallpaper.</span></h2></div><span class="section-count">01 — CATEGORIES</span></div>
+      <div class="category-list" id="categoryList">
+        <button class="category-pill selected" data-category="All">✦ <span>All wallpapers</span></button>
+        <button class="category-pill" data-category="Nature">⌁ <span>Nature</span></button>
+        <button class="category-pill" data-category="AMOLED">◐ <span>AMOLED</span></button>
+        <button class="category-pill" data-category="Anime">✧ <span>Anime</span></button>
+        <button class="category-pill" data-category="Cars">⌁ <span>Cars</span></button>
+        <button class="category-pill" data-category="Gaming">▣ <span>Gaming</span></button>
+        <button class="category-pill" data-category="Abstract">✳ <span>Abstract</span></button>
+        <button class="category-pill" data-category="Space">☄ <span>Space</span></button>
+      </div>
+    </section>
+
+    <section class="wallpaper-section" id="wallpapers">
+      <div class="section-heading gallery-heading">
+        <div><div class="eyebrow">THE COLLECTION</div><h2 id="galleryTitle">Fresh <span>wallpapers.</span></h2><p class="section-subtitle" id="gallerySubtitle">A little inspiration for your lock screen and home screen.</p></div>
+        <div class="gallery-tools">
+          <label class="search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="searchInput" type="search" placeholder="Search wallpapers..." autocomplete="off"></label>
+          <select id="sortSelect" aria-label="Sort wallpapers"><option value="newest">Newest first</option><option value="popular">Most downloaded</option><option value="az">A to Z</option></select>
+        </div>
+      </div>
+      <div class="filter-row"><span id="resultCount">Featured collection</span><span class="quality-tag"><span></span> HIGH RESOLUTION</span></div>
+      <div class="wallpaper-grid" id="wallpaperGrid">
+        <div class="loading-state"><div class="loader"></div><span>Loading the collection...</span></div>
+      </div>
+      <div class="empty-state hidden" id="emptyState"><div class="empty-icon">⌕</div><h3>No wallpapers found</h3><p>Try another search or category.</p><button class="text-button" id="clearFilters">Clear filters ↗</button></div>
+    </section>
+
+    <section class="join-banner">
+      <div><div class="eyebrow">YOUR WALLPAPER COLLECTION</div><h2>Save the ones you <span>love.</span></h2><p>Sign in to keep your favourite wallpapers together.</p></div>
+      <button class="primary-button" id="joinButton">Create a free account <span>↗</span></button>
+      <div class="banner-orb"></div>
+    </section>
+  </main>
+
+  <footer><a class="brand footer-brand" href="#"><span class="brand-mark"><span></span><span></span><span></span></span><span>SUPER<span class="brand-blue">WALLPAPERS</span></span></a><span>Made for screens that deserve better.</span><span>© <span id="year"></span> Superwallpapers</span></footer>
+
+  <!-- Authentication modal -->
+  <div class="modal-backdrop hidden" id="authModal">
+    <section class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <button class="modal-close" data-close="authModal" aria-label="Close">×</button>
+      <div class="modal-brand"><span class="brand-mark"><span></span><span></span><span></span></span></div>
+      <div class="eyebrow">WELCOME TO THE COLLECTION</div>
+      <h2 id="authTitle">Your next favourite<br><span>starts here.</span></h2>
+      <p class="modal-desc">Sign in or create an account to save your favourites.</p>
+      <div class="auth-tabs"><button class="auth-tab active" data-mode="signin">Sign in</button><button class="auth-tab" data-mode="signup">Create account</button></div>
+      <form id="authForm">
+        <label class="field-label" id="nameFieldLabel">Username</label><input class="form-input" id="usernameInput" placeholder="Your username" autocomplete="username" />
+        <label class="field-label">Email address</label><input class="form-input" id="emailInput" type="email" placeholder="you@example.com" required autocomplete="email" />
+        <label class="field-label">Password</label><input class="form-input" id="passwordInput" type="password" placeholder="At least 6 characters" required minlength="6" autocomplete="current-password" />
+        <button class="primary-button full-button" type="submit" id="authSubmit">Sign in <span>↗</span></button>
+      </form>
+      <div class="or-divider"><span></span> OR <span></span></div>
+      <button class="google-button" id="googleSignIn"><span class="google-g">G</span> Continue with Google</button>
+      <p class="fine-print">By continuing, you agree to use the site responsibly. Your password is handled securely by Firebase Authentication.</p>
+    </section>
+  </div>
+
+  <!-- Account menu -->
+  <div class="modal-backdrop hidden" id="accountModal">
+    <section class="modal account-modal" role="dialog" aria-modal="true">
+      <button class="modal-close" data-close="accountModal" aria-label="Close">×</button>
+      <div class="account-avatar" id="accountAvatar">S</div><h2 id="accountName">Your account</h2><p id="accountEmail" class="muted"></p>
+      <div class="account-actions"><button class="secondary-button hidden" id="adminDashboardButton">⚙ Admin dashboard</button><button class="secondary-button" id="myFavouritesButton">♡ My favourites</button><button class="secondary-button danger-button" id="signOutButton">Sign out</button></div>
+    </section>
+  </div>
+
+  <!-- Admin dashboard -->
+  <div class="modal-backdrop hidden" id="adminModal">
+    <section class="modal admin-modal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+      <button class="modal-close" data-close="adminModal" aria-label="Close">×</button>
+      <div class="eyebrow">PRIVATE CONTROL ROOM</div><h2 id="adminTitle">Admin <span>dashboard.</span></h2>
+      <p class="modal-desc">Only the configured administrator account can publish wallpapers.</p>
+      <form id="uploadForm" class="upload-form">
+        <label class="upload-drop" for="wallpaperFile"><span class="upload-symbol">↑</span><b>Choose a wallpaper</b><small>JPG, PNG or WebP · up to 20 MB</small><input id="wallpaperFile" type="file" accept="image/jpeg,image/png,image/webp" required /></label>
+        <div class="upload-preview hidden" id="uploadPreview"><img id="previewImage" alt="Wallpaper preview"><button type="button" id="removePreview">Remove image ×</button></div>
+        <label class="field-label">Wallpaper title</label><input class="form-input" id="wallpaperTitle" placeholder="e.g. Midnight mountains" required maxlength="80">
+        <label class="field-label">Category</label><select class="form-input" id="wallpaperCategory"><option>Nature</option><option>AMOLED</option><option>Anime</option><option>Cars</option><option>Gaming</option><option>Abstract</option><option>Space</option><option>Minimal</option></select>
+        <label class="field-label">Short description (optional)</label><input class="form-input" id="wallpaperDescription" placeholder="A short description" maxlength="180">
+        <button class="primary-button full-button" type="submit" id="publishButton">Publish wallpaper <span>↗</span></button>
+      </form>
+      <p class="admin-note">Admin access is enforced by Firebase security rules, not just by hiding this dashboard.</p>
+    </section>
+  </div>
+
+  <!-- Wallpaper detail -->
+  <div class="modal-backdrop hidden" id="detailModal">
+    <section class="modal detail-modal" role="dialog" aria-modal="true">
+      <button class="modal-close light-close" data-close="detailModal" aria-label="Close">×</button>
+      <img class="detail-image" id="detailImage" alt="Selected wallpaper">
+      <div class="detail-content"><div class="detail-meta"><span class="quality-tag"><span></span> HIGH RESOLUTION</span><span id="detailCategory"></span></div><h2 id="detailTitle"></h2><p id="detailDescription" class="muted"></p><div class="detail-actions"><a class="primary-button" id="downloadButton" href="#" download>Download wallpaper <span>↓</span></a><button class="favourite-button detail-fav" id="detailFavourite">♡ Save</button></div><small class="download-hint">Downloads the original image uploaded by the creator.</small></div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
