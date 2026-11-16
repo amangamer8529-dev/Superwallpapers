@@ -401,3 +401,223 @@ document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea,sele
 const focusOrigins=new Map();
 for(const panel of document.querySelectorAll('.modal-backdrop,#menuPanel')){new MutationObserver(()=>{const open=panel.id==='menuPanel'?panel.classList.contains('is-open'):!panel.hidden;if(open){focusOrigins.set(panel,document.activeElement);requestAnimationFrame(()=>panel.querySelector('button,a[href],input,select')?.focus());}else{const prior=focusOrigins.get(panel);if(prior?.isConnected)prior.focus();focusOrigins.delete(panel);}}).observe(panel,{attributes:true,attributeFilter:[panel.id==='menuPanel'?'aria-hidden':'hidden']});}
 document.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const panel=document.querySelector('.modal-backdrop:not([hidden])')||document.querySelector('#menuPanel.is-open');if(!panel)return;const nodes=[...panel.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),[tabindex="0"]')].filter(n=>n.getClientRects().length);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}});
+/* Admin Dashboard, Per-Card & Bulk Delete, Bulk Import Fix, and Super Hero Category */
+(()=>{
+const CATS=['Anime','Nature','AMOLED','Cars','Gaming','Space','Abstract','Minimal','Super Hero'];
+const ensureOption=(sel,val)=>{if(!sel||[...sel.options].some(o=>o.value===val||o.textContent===val))return;const o=document.createElement('option');o.value=val;o.textContent=val;sel.appendChild(o);};
+const initSuperHero=()=>{
+  const rail=$('categoryRail');
+  if(rail&&!rail.querySelector('[data-category="Super Hero"]')){
+    const b=document.createElement('button');
+    b.className='category-card cat-superhero';b.type='button';b.dataset.category='Super Hero';
+    b.innerHTML='<span class="category-number">09 / WORLD</span><span class="category-name">Super Hero</span>';
+    b.addEventListener('click',()=>{state.filter='Super Hero';state.page='browse';renderAll();});
+    rail.appendChild(b);
+  }
+  const pills=$('browsePills');
+  if(pills&&!pills.querySelector('[data-filter="Super Hero"]')){
+    const p=document.createElement('button');
+    p.className='filter-pill';p.type='button';p.dataset.filter='Super Hero';p.textContent='Super Hero';
+    p.addEventListener('click',()=>{state.filter='Super Hero';renderAll();});
+    pills.appendChild(p);
+  }
+  ensureOption($('wallpaperCategory'),'Super Hero');
+};
+const refreshCardDeleteButtons=()=>{
+  const admin=isAdmin();
+  document.querySelectorAll('.wall-card').forEach(card=>{
+    const id=card.dataset.cardId;
+    const existing=card.querySelector('.wall-del');
+    if(!admin){if(existing)existing.remove();return;}
+    if(existing||!id)return;
+    const fav=card.querySelector('.wall-fav');
+    if(!fav)return;
+    let wrap=card.querySelector('.wall-card-actions');
+    if(!wrap){wrap=document.createElement('div');wrap.className='wall-card-actions';fav.parentNode.insertBefore(wrap,fav);wrap.appendChild(fav);}
+    const del=document.createElement('button');
+    del.type='button';del.className='wall-del';del.dataset.del=id;
+    del.setAttribute('aria-label','Delete wallpaper');del.title='Delete wallpaper';
+    del.innerHTML='&#128465;';
+    wrap.appendChild(del);
+  });
+};
+const deleteWallpaperById=async(id,silent=false)=>{
+  if(!isAdmin()){notify('Admin access required.');return false;}
+  const item=state.wallpapers.find(w=>String(w.id)===String(id));
+  if(!item)return false;
+  if(!item.demo){
+    const supa=await connectSupabase();
+    if(item.storage_path){try{await supa.storage.from('wallpapers').remove([item.storage_path]);}catch(e){console.warn(e);}}
+    const {error}=await supa.from('wallpapers').delete().eq('id',item.id);
+    if(error){if(!silent)notify('Delete failed: '+error.message);return false;}
+  }
+  state.wallpapers=state.wallpapers.filter(w=>String(w.id)!==String(id));
+  state.favouriteIds=state.favouriteIds.filter(f=>String(f)!==String(id));
+  if(!silent){renderAll();renderAdminManager();notify('Wallpaper deleted.');}
+  return true;
+};
+const updateWallpaperById=async(id,title,category)=>{
+  if(!isAdmin()){notify('Admin access required.');return false;}
+  const item=state.wallpapers.find(w=>String(w.id)===String(id));
+  if(!item)return false;
+  if(!item.demo){
+    const supa=await connectSupabase();
+    const {error}=await supa.from('wallpapers').update({title,category}).eq('id',item.id);
+    if(error){notify('Update failed: '+error.message);return false;}
+  }
+  item.title=title;item.category=category;
+  renderAll();renderAdminManager();notify('Wallpaper updated.');
+  return true;
+};
+const renderAdminStats=()=>{
+  const box=$('adminStats');if(!box)return;
+  const total=state.wallpapers.length;
+  const cats=new Set(state.wallpapers.map(w=>w.category).filter(Boolean)).size;
+  const dl=state.wallpapers.reduce((s,w)=>s+(Number(w.downloads)||0),0);
+  const uploaded=state.wallpapers.filter(w=>!w.demo).length;
+  box.innerHTML=`<div class="admin-stat"><strong>${total}</strong><span>Total Wallpapers</span></div><div class="admin-stat"><strong>${cats}</strong><span>Active Categories</span></div><div class="admin-stat"><strong>${dl}</strong><span>Total Downloads</span></div><div class="admin-stat"><strong>${uploaded}</strong><span>Cloud Uploads</span></div>`;
+};
+const renderAdminManager=()=>{
+  renderAdminStats();
+  const list=$('adminWallList');if(!list)return;
+  const q=($('adminSearch')?.value||'').trim().toLowerCase();
+  const cf=$('adminCatFilter')?.value||'All';
+  const rows=state.wallpapers.filter(w=>{
+    const okQ=!q||(w.title||'').toLowerCase().includes(q)||(w.category||'').toLowerCase().includes(q);
+    const okC=cf==='All'||w.category===cf;
+    return okQ&&okC;
+  });
+  if(!rows.length){list.innerHTML='<p class="modal-copy">No matching wallpapers found.</p>';return;}
+  list.innerHTML=rows.map(w=>{
+    const id=String(w.id).replace(/"/g,'&quot;');
+    const title=(w.title||'Untitled').replace(/"/g,'&quot;');
+    const opts=CATS.map(c=>`<option value="${c}"${w.category===c?' selected':''}>${c}</option>`).join('');
+    return `<div class="admin-item" data-admin-id="${id}"><input type="checkbox" class="admin-sel" data-id="${id}"/><img class="admin-item-thumb" src="${w.image_url||w.url||''}" alt=""/><div class="admin-item-meta"><input type="text" class="admin-edit-title" value="${title}" aria-label="Title"/><select class="admin-edit-cat" aria-label="Category">${opts}</select></div><div class="admin-item-actions"><button type="button" class="pill-btn admin-save-btn" data-save-id="${id}">Save</button><button type="button" class="btn-danger admin-del-btn" data-del-id="${id}">Delete</button></div></div>`;
+  }).join('');
+};
+const initAdminDashboard=()=>{
+  const modal=$('adminModal');if(!modal)return;
+  const sec=modal.querySelector('.admin-modal');if(sec)sec.classList.add('admin-modal-wide');
+  const form=$('uploadForm');
+  if(!form||$('adminStats'))return;
+  const dash=document.createElement('div');
+  dash.innerHTML=`<div id="adminStats" class="admin-stats"></div><div class="admin-tabs"><button type="button" class="admin-tab is-active" data-admin-tab="upload">Upload</button><button type="button" class="admin-tab" data-admin-tab="manage">Manage Wallpapers</button><button type="button" class="admin-tab" data-admin-tab="data">Data &amp; Export</button><button type="button" class="admin-tab" id="adminOpenBulkBtn">Bulk Import</button></div>`;
+  form.parentNode.insertBefore(dash,form);
+  const manage=document.createElement('div');manage.id='adminTabManage';manage.hidden=true;
+  manage.innerHTML=`<div class="admin-toolbar"><input type="search" id="adminSearch" placeholder="Search title..."/><select id="adminCatFilter"><option value="All">All Categories</option>${CATS.map(c=>`<option>${c}</option>`).join('')}</select><label><input type="checkbox" id="adminSelectAll"/> All</label><select id="adminBulkCat">${CATS.map(c=>`<option>${c}</option>`).join('')}</select><button type="button" class="pill-btn" id="adminBulkMove">Move Selected</button><button type="button" class="btn-danger" id="adminBulkDelete">Delete Selected</button></div><div id="adminWallList" class="admin-list"></div>`;
+  const dataPanel=document.createElement('div');dataPanel.id='adminTabData';dataPanel.hidden=true;
+  dataPanel.innerHTML=`<div class="admin-toolbar"><button type="button" class="pill-btn" id="adminExportJson">Export Wallpapers JSON</button><button type="button" class="pill-btn" id="adminClearCache">Clear Local Cache</button><button type="button" class="btn-danger" id="adminDeleteAll">Delete All Cloud Uploads</button></div><p class="modal-copy" id="adminDataStatus"></p>`;
+  form.parentNode.insertBefore(manage,form.nextSibling);
+  form.parentNode.insertBefore(dataPanel,manage.nextSibling);
+  dash.querySelectorAll('[data-admin-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+    dash.querySelectorAll('[data-admin-tab]').forEach(b=>b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    const t=btn.dataset.adminTab;
+    form.hidden=t!=='upload';manage.hidden=t!=='manage';dataPanel.hidden=t!=='data';
+    if(t==='manage')renderAdminManager();
+    renderAdminStats();
+  }));
+  $('adminOpenBulkBtn')?.addEventListener('click',()=>{modal.hidden=true;openBulkModal();});
+  $('adminSearch')?.addEventListener('input',renderAdminManager);
+  $('adminCatFilter')?.addEventListener('change',renderAdminManager);
+  $('adminSelectAll')?.addEventListener('change',e=>{document.querySelectorAll('#adminWallList .admin-sel').forEach(c=>c.checked=e.target.checked);});
+  $('adminWallList')?.addEventListener('click',async e=>{
+    const saveBtn=e.target.closest('[data-save-id]');
+    if(saveBtn){const row=saveBtn.closest('.admin-item');await updateWallpaperById(saveBtn.dataset.saveId,row.querySelector('.admin-edit-title').value.trim(),row.querySelector('.admin-edit-cat').value);}
+    const delBtn=e.target.closest('[data-del-id]');
+    if(delBtn&&confirm('Delete this wallpaper permanently?')){await deleteWallpaperById(delBtn.dataset.delId);}
+  });
+  $('adminBulkDelete')?.addEventListener('click',async()=>{
+    const ids=[...document.querySelectorAll('#adminWallList .admin-sel:checked')].map(c=>c.dataset.id);
+    if(!ids.length)return notify('Select at least one wallpaper.');
+    if(!confirm(`Delete ${ids.length} selected wallpaper(s)?`))return;
+    for(const id of ids)await deleteWallpaperById(id,true);
+    renderAll();renderAdminManager();notify(`Deleted ${ids.length} wallpaper(s).`);
+  });
+  $('adminBulkMove')?.addEventListener('click',async()=>{
+    const ids=[...document.querySelectorAll('#adminWallList .admin-sel:checked')].map(c=>c.dataset.id);
+    const cat=$('adminBulkCat').value;
+    if(!ids.length)return notify('Select at least one wallpaper.');
+    for(const id of ids){const item=state.wallpapers.find(w=>String(w.id)===String(id));if(item)await updateWallpaperById(id,item.title,cat);}
+    notify(`Moved ${ids.length} wallpaper(s) to ${cat}.`);
+  });
+  $('adminExportJson')?.addEventListener('click',()=>{
+    const blob=new Blob([JSON.stringify(state.wallpapers,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`superwallpapers-export-${Date.now()}.json`;a.click();
+    $('adminDataStatus').textContent=`Exported ${state.wallpapers.length} wallpapers.`;
+  });
+  $('adminClearCache')?.addEventListener('click',()=>{
+    localStorage.removeItem('sw.studio.preferences');localStorage.removeItem('sw.studio.favs');
+    $('adminDataStatus').textContent='Local cache cleared.';notify('Local cache cleared.');
+  });
+  $('adminDeleteAll')?.addEventListener('click',async()=>{
+    const cloud=state.wallpapers.filter(w=>!w.demo);
+    if(!cloud.length)return notify('No cloud uploads to delete.');
+    if(!confirm(`Delete ALL ${cloud.length} cloud-uploaded wallpapers?`))return;
+    for(const w of cloud)await deleteWallpaperById(w.id,true);
+    renderAll();renderAdminManager();$('adminDataStatus').textContent=`Deleted ${cloud.length} cloud uploads.`;
+  });
+  $('adminOpen')?.addEventListener('click',()=>{setTimeout(renderAdminStats,50);});
+};
+const openBulkModal=()=>{
+  if(!isAdmin())return notify('Admin sign-in required.');
+  let m=$('bulkImportModal');
+  if(!m){
+    m=document.createElement('div');m.id='bulkImportModal';m.className='modal-backdrop';m.setAttribute('role','presentation');m.hidden=true;
+    m.innerHTML=`<section class="modal admin-modal admin-modal-wide" role="dialog" aria-modal="true" aria-label="Bulk Import Wallpapers"><div class="modal-head"><h2>Bulk Import Wallpapers</h2><button type="button" class="icon-btn" id="bulkCloseBtn" aria-label="Close">&times;</button></div><p class="modal-copy">Choose a target category and select multiple image files or paste image URLs (one per line).</p><form id="bulkImportForm" class="stack-form"><label>Target Category<select id="bulkCategory">${CATS.map(c=>`<option value="${c}">${c}</option>`).join('')}</select></label><label>Select Multiple Images<input type="file" id="bulkFiles" accept="image/jpeg,image/png,image/webp,image/*" multiple/></label><label>Or Paste Image URLs (one per line)<textarea id="bulkUrls" rows="4" placeholder="Paste one image URL per line"></textarea></label><div class="bulk-progress-wrap" id="bulkProgressWrap" hidden><div class="bulk-progress"><div class="bulk-progress-bar" id="bulkProgressBar"></div></div><small id="bulkProgressText">0 / 0</small></div><div class="bulk-log" id="bulkLog" hidden></div><button type="submit" class="primary-btn" id="bulkSubmit">Start Bulk Import</button></form></section>`;
+    document.body.appendChild(m);
+    $('bulkCloseBtn').addEventListener('click',()=>m.hidden=true);
+    m.addEventListener('click',e=>{if(e.target===m)m.hidden=true;});
+    $('bulkImportForm').addEventListener('submit',async e=>{
+      e.preventDefault();
+      if(!isAdmin())return notify('Admin access required.');
+      const cat=$('bulkCategory').value;
+      const files=[...($('bulkFiles').files||[])];
+      const urls=($('bulkUrls').value||'').split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+      const total=files.length+urls.length;
+      if(!total)return notify('Select at least one image file or enter a URL.');
+      const wrap=$('bulkProgressWrap'),bar=$('bulkProgressBar'),txt=$('bulkProgressText'),log=$('bulkLog'),btn=$('bulkSubmit');
+      wrap.hidden=false;log.hidden=false;log.innerHTML='';btn.disabled=true;
+      let done=0,ok=0,fail=0;
+      const supa=await connectSupabase();
+      const step=(msg,isErr=false)=>{done++;bar.style.width=Math.round((done/total)*100)+'%';txt.textContent=`${done} / ${total} (${ok} imported, ${fail} failed)`;const d=document.createElement('div');d.textContent=msg;if(isErr)d.style.color='#ff6b6b';log.appendChild(d);log.scrollTop=log.scrollHeight;};
+      for(let i=0;i<files.length;i++){
+        const f=files[i];
+        try{
+          const safe=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+          const path=`bulk/${Date.now()}-${i}-${safe}`;
+          const {error:upErr}=await supa.storage.from('wallpapers').upload(path,f,{upsert:false,contentType:f.type||'image/jpeg'});
+          if(upErr)throw upErr;
+          const {data:pub}=supa.storage.from('wallpapers').getPublicUrl(path);
+          const title=f.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim()||'Wallpaper';
+          const {error:dbErr}=await supa.from('wallpapers').insert({title,category:cat,image_url:pub.publicUrl,storage_path:path,created_by:state.user.id});
+          if(dbErr)throw dbErr;
+          ok++;step(`Uploaded: ${f.name} -> ${cat}`);
+        }catch(err){fail++;step(`Failed ${f.name}: ${err.message||err}`,true);}
+      }
+      for(let i=0;i<urls.length;i++){
+        const u=urls[i];
+        try{
+          const title=decodeURIComponent(u.split('/').pop()?.split('?')[0]||'').replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim()||`Wallpaper ${i+1}`;
+          const {error:dbErr}=await supa.from('wallpapers').insert({title,category:cat,image_url:u,created_by:state.user.id});
+          if(dbErr)throw dbErr;
+          ok++;step(`Imported URL: ${title} -> ${cat}`);
+        }catch(err){fail++;step(`Failed URL ${u}: ${err.message||err}`,true);}
+      }
+      btn.disabled=false;
+      if(typeof loadWallpapers==='function')await loadWallpapers();
+      renderAll();renderAdminStats();
+      notify(`Bulk import complete: ${ok} added, ${fail} failed.`);
+    });
+  }
+  m.hidden=false;
+};
+document.addEventListener('click',async e=>{
+  const del=e.target.closest('[data-del]');
+  if(del){e.stopPropagation();if(confirm('Delete this wallpaper?'))await deleteWallpaperById(del.dataset.del);}
+});
+$('bulkUploadOpen')?.addEventListener('click',e=>{e.preventDefault();const acc=$('accountModal');if(acc)acc.hidden=true;openBulkModal();});
+const obs=new MutationObserver(refreshCardDeleteButtons);
+['homeGrid','browseGrid','searchGrid','savedGrid'].forEach(id=>{const el=$(id);if(el)obs.observe(el,{childList:true,subtree:true});});
+initSuperHero();initAdminDashboard();refreshCardDeleteButtons();
+})();
