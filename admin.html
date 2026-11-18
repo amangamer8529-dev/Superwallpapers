@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080c13">
+  <meta name="description" content="Private Superwallpapers content management dashboard.">
+  <title>Studio Admin — Superwallpapers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="modern.css?v=5">
+  <style>
+    .admin-page{width:min(1200px,calc(100% - 32px));margin:42px auto 80px}.admin-top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:28px}.admin-top h1{font:700 clamp(32px,5vw,52px)/1.1 'Space Grotesk',sans-serif;letter-spacing:-.05em;margin:8px 0}.admin-top p,.muted{color:#98a8bf}.admin-panel{padding:22px;border:1px solid rgba(186,211,255,.14);border-radius:20px;background:rgba(13,23,39,.8);box-shadow:0 20px 70px #0003}.admin-login{max-width:440px;margin:9vh auto}.admin-login form,.admin-upload{display:grid;gap:14px}.admin-page input,.admin-page select,.admin-page textarea{width:100%;padding:11px 13px;border:1px solid rgba(186,211,255,.18);border-radius:11px;background:#0a1220;color:#f7f9ff}.admin-page textarea{min-height:84px;resize:vertical}.admin-page label{display:grid;gap:7px;color:#c5d5e9;font-weight:600}.admin-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.admin-toolbar>*{flex:1 1 170px}.admin-button{padding:10px 15px;border-radius:11px;border:1px solid rgba(145,201,255,.26);background:#142944;color:#eef7ff;font-weight:700}.admin-button.primary{background:linear-gradient(130deg,#6cb7ff,#347cf0);border:0}.admin-button.danger{background:#622c39;border-color:#a34a58}.admin-button:disabled{opacity:.55;cursor:wait}.admin-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}.metric{padding:16px;border:1px solid rgba(186,211,255,.12);border-radius:15px;background:rgba(21,34,54,.55)}.metric strong{display:block;font:700 26px 'Space Grotesk',sans-serif}.metric span{color:#98a8bf;font-size:12px}.admin-table-wrap{overflow:auto;border:1px solid rgba(186,211,255,.12);border-radius:14px}.admin-table{width:100%;border-collapse:collapse;min-width:780px}.admin-table th,.admin-table td{text-align:left;padding:12px;border-bottom:1px solid rgba(186,211,255,.1);vertical-align:middle}.admin-table th{color:#9fcfff;font-size:11px;text-transform:uppercase;letter-spacing:.1em}.admin-table td{font-size:13px}.admin-table tr:last-child td{border-bottom:0}.wall-thumb{width:46px;height:58px;object-fit:cover;border-radius:8px;background:#0a1220}.row-actions{display:flex;gap:7px}.row-actions .admin-button{padding:7px 10px}.status{min-height:22px;color:#a8d7ff}.admin-section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:30px}.admin-section-title h2{font:600 22px 'Space Grotesk',sans-serif}.hidden{display:none!important}.login-error{color:#ffabb3}.feature-note{padding:12px 14px;border:1px solid rgba(145,201,255,.16);border-radius:12px;background:rgba(43,83,133,.14);color:#aac0dc;font-size:13px}.admin-page footer{margin-top:24px;color:#8195ae;font-size:12px}@media(max-width:700px){.admin-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-panel{padding:16px}.admin-top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="site-ambient" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="./"><span class="brand-icon"><i></i><i></i><i></i></span><span>SUPER<span>WALLPAPERS</span></span></a>
+    <a class="button-quiet" href="./">← Back to website</a>
+  </header>
+  <main class="admin-page">
+    <section id="loginPanel" class="admin-panel admin-login">
+      <div class="eyebrow">PRIVATE CREATOR STUDIO</div><h1>Welcome <span>back.</span></h1>
+      <p class="muted">Sign in with the administrator account to manage your wallpaper collection.</p>
+      <form id="loginForm">
+        <label>Email<input id="email" type="email" autocomplete="username" required></label>
+        <label>Password<input id="password" type="password" autocomplete="current-password" required minlength="6"></label>
+        <button class="admin-button primary" id="loginButton" type="submit">Sign in to Studio ↗</button>
+      </form>
+      <p id="loginStatus" class="status" role="status"></p>
+      <p class="feature-note">Your admin access is verified against the configured admin email and enforced by Supabase Row Level Security. Never put a service-role key in this website.</p>
+    </section>
+
+    <section id="dashboard" hidden>
+      <div class="admin-top"><div><div class="eyebrow">SUPERWALLPAPERS · CONTENT STUDIO</div><h1>Creator <span>dashboard.</span></h1><p id="adminIdentity" class="muted"></p></div><button id="signOutButton" class="admin-button" type="button">Sign out</button></div>
+      <div class="admin-metrics" aria-live="polite">
+        <div class="metric"><strong id="metricTotal">—</strong><span>Published wallpapers</span></div>
+        <div class="metric"><strong id="metricDownloads">—</strong><span>Total downloads</span></div>
+        <div class="metric"><strong id="metricCategories">—</strong><span>Active categories</span></div>
+        <div class="metric"><strong id="metricLatest">—</strong><span>Latest upload</span></div>
+      </div>
+      <section class="admin-panel">
+        <div class="admin-section-title"><div><div class="eyebrow">PUBLISH TO YOUR COLLECTION</div><h2>Upload a wallpaper</h2></div></div>
+        <form id="uploadForm" class="admin-upload">
+          <label>Image (JPG, PNG or WebP; up to 20 MB)<input id="imageFile" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+          <label>Title<input id="imageTitle" maxlength="100" required placeholder="A name for your wallpaper"></label>
+          <label>Category<select id="imageCategory"><option>Anime</option><option>Nature</option><option>AMOLED</option><option>Cars</option><option>Gaming</option><option>Space</option><option>Abstract</option><option>Minimal</option><option>Super Hero</option></select></label>
+          <label>Description<textarea id="imageDescription" maxlength="300" placeholder="Add a little detail (optional)"></textarea></label>
+          <button class="admin-button primary" id="publishButton" type="submit">Publish wallpaper ↗</button>
+        </form>
+      </section>
+      <section class="admin-panel" style="margin-top:18px">
+        <div class="admin-section-title"><div><div class="eyebrow">CONTENT LIBRARY</div><h2>Manage wallpapers</h2></div><button class="admin-button" id="refreshButton" type="button">Refresh</button></div>
+        <div class="admin-toolbar"><input id="filterText" type="search" placeholder="Search title, category or description…" aria-label="Search wallpapers"><select id="filterCategory" aria-label="Filter by category"><option value="">All categories</option></select><select id="sortBy" aria-label="Sort wallpapers"><option value="newest">Newest first</option><option value="popular">Most downloaded</option><option value="az">Title A–Z</option></select><button class="admin-button" id="exportButton" type="button">Export CSV</button></div>
+        <p id="libraryStatus" class="status" role="status"></p>
+        <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Preview</th><th>Wallpaper</th><th>Category</th><th>Downloads</th><th>Added</th><th>Actions</th></tr></thead><tbody id="wallpaperRows"></tbody></table></div>
+      </section>
+      <footer>Admin workspace for Superwallpapers · Changes are stored in your Supabase project.</footer>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import { SUPABASE_URL, SUPABASE_ANON_KEY, ADMIN_EMAIL } from './supabase-config.js';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const $ = id => document.getElementById(id);
+    let user = null;
+    let wallpapers = [];
+    const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function message(text, target='libraryStatus') { $(target).textContent = text; }
+    function isAdmin(candidate) { return !!candidate && String(candidate.email || '').toLowerCase() === String(ADMIN_EMAIL || '').toLowerCase(); }
+    function setDashboard(active) { $('loginPanel').hidden = active; $('dashboard').hidden = !active; }
+    async function refresh() {
+      message('Loading your collection…');
+      const { data, error } = await supabase.from('wallpapers').select('id,title,category,description,image_url,storage_path,downloads,created_at').order('created_at', {ascending:false});
+      if (error) throw error;
+      wallpapers = data || [];
+      $('metricTotal').textContent = String(wallpapers.length);
+      $('metricDownloads').textContent = wallpapers.reduce((sum, item) => sum + (Number(item.downloads) || 0), 0).toLocaleString();
+      $('metricCategories').textContent = String(new Set(wallpapers.map(item => item.category).filter(Boolean)).size);
+      $('metricLatest').textContent = wallpapers[0]?.created_at ? new Date(wallpapers[0].created_at).toLocaleDateString() : '—';
+      const categories = [...new Set(wallpapers.map(item => item.category).filter(Boolean))].sort((a,b) => a.localeCompare(b));
+      const selector = $('filterCategory');
+      const selected = selector.value;
+      selector.replaceChildren(new Option('All categories', ''), ...categories.map(category => new Option(category, category)));
+      selector.value = categories.includes(selected) ? selected : '';
+      renderRows(); message(`${wallpapers.length} wallpaper${wallpapers.length === 1 ? '' : 's'} loaded.`);
+    }
+    function filteredItems() {
+      const query = $('filterText').value.trim().toLowerCase();
+      const category = $('filterCategory').value;
+      const result = wallpapers.filter(item => (!category || item.category === category) && (!query || [item.title,item.category,item.description].some(value => String(value || '').toLowerCase().includes(query))));
+      if ($('sortBy').value === 'popular') result.sort((a,b) => Number(b.downloads || 0) - Number(a.downloads || 0));
+      else if ($('sortBy').value === 'az') result.sort((a,b) => String(a.title || '').localeCompare(String(b.title || '')));
+      else result.sort((a,b) => Date.parse(b.created_at || '') - Date.parse(a.created_at || ''));
+      return result;
+    }
+    function renderRows() {
+      const rows = $('wallpaperRows'); rows.replaceChildren();
+      const items = filteredItems();
+      if (!items.length) { const row = rows.insertRow(); const cell = row.insertCell(); cell.colSpan = 6; cell.textContent = 'No wallpapers match these filters.'; return; }
+      for (const item of items) {
+        const row = rows.insertRow();
+        const preview = row.insertCell(); const img = document.createElement('img'); img.className='wall-thumb'; img.loading='lazy'; img.alt=''; img.src=item.image_url || ''; preview.append(img);
+        const details = row.insertCell(); const title = document.createElement('strong'); title.textContent=item.title || 'Untitled'; details.append(title); const desc=document.createElement('div'); desc.className='muted'; desc.textContent=item.description || ''; details.append(desc);
+        row.insertCell().textContent=item.category || '—'; row.insertCell().textContent=(Number(item.downloads)||0).toLocaleString(); row.insertCell().textContent=item.created_at ? new Date(item.created_at).toLocaleDateString() : '—';
+        const actions=row.insertCell(); actions.className='row-actions';
+        const edit=document.createElement('button'); edit.className='admin-button'; edit.type='button'; edit.textContent='Edit'; edit.addEventListener('click',()=>editWallpaper(item)); actions.append(edit);
+        const del=document.createElement('button'); del.className='admin-button danger'; del.type='button'; del.textContent='Delete'; del.addEventListener('click',()=>deleteWallpaper(item)); actions.append(del);
+      }
+    }
+    async function editWallpaper(item) {
+      const title=prompt('Wallpaper title:',item.title || ''); if(title===null)return;
+      const category=prompt('Category:',item.category || ''); if(category===null)return;
+      const description=prompt('Description:',item.description || ''); if(description===null)return;
+      const cleanTitle=title.trim(), cleanCategory=category.trim();
+      if(!cleanTitle || !cleanCategory){message('Title and category cannot be empty.');return;}
+      const {error}=await supabase.from('wallpapers').update({title:cleanTitle,category:cleanCategory,description:description.trim()}).eq('id',item.id);
+      if(error){message(`Could not save changes: ${error.message}`);return;}
+      message('Wallpaper details updated.'); await refresh();
+    }
+    async function deleteWallpaper(item) {
+      if(!confirm(`Permanently delete “${item.title || 'Untitled'}”? This cannot be undone.`))return;
+      const {error}=await supabase.from('wallpapers').delete().eq('id',item.id);
+      if(error){message(`Delete failed: ${error.message}`);return;}
+      if(item.storage_path){const {error:storageError}=await supabase.storage.from('wallpapers').remove([item.storage_path]);if(storageError)console.warn('Wallpaper row deleted, but image cleanup failed:',storageError.message);}
+      message('Wallpaper deleted.'); await refresh();
+    }
+    function exportCSV() {
+      const fields=['id','title','category','description','image_url','storage_path','downloads','created_at'];
+      const quote=value=>'"'+String(value ?? '').replace(/"/g,'""')+'"';
+      const csv=[fields.join(','),...filteredItems().map(item=>fields.map(field=>quote(item[field])).join(','))].join('\r\n');
+      const link=document.createElement('a'); link.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); link.download=`superwallpapers-${new Date().toISOString().slice(0,10)}.csv`; link.click(); setTimeout(()=>URL.revokeObjectURL(link.href),1000);
+      message(`Exported ${filteredItems().length} filtered wallpapers as CSV.`);
+    }
+    $('loginForm').addEventListener('submit',async event=>{
+      event.preventDefault(); const button=$('loginButton'); button.disabled=true; message('Checking administrator account…','loginStatus');
+      try { const {data,error}=await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value}); if(error)throw error; if(!isAdmin(data.user)){await supabase.auth.signOut();throw new Error('This account is not authorized as the site administrator.');} user=data.user; $('adminIdentity').textContent=`Signed in as ${user.email}`; setDashboard(true); await refresh(); }
+      catch(error){message(error.message || 'Sign in failed.','loginStatus');}
+      finally{button.disabled=false;}
+    });
+    $('signOutButton').addEventListener('click',async()=>{await supabase.auth.signOut();user=null;wallpapers=[];setDashboard(false);$('loginForm').reset();message('You have signed out.','loginStatus');});
+    $('refreshButton').addEventListener('click',()=>refresh().catch(error=>message(`Could not load wallpapers: ${error.message}`)));
+    $('filterText').addEventListener('input',renderRows); $('filterCategory').addEventListener('change',renderRows); $('sortBy').addEventListener('change',renderRows); $('exportButton').addEventListener('click',exportCSV);
+    $('uploadForm').addEventListener('submit',async event=>{
+      event.preventDefault(); if(!isAdmin(user)){message('Administrator access required.');return;}
+      const file=$('imageFile').files[0]; if(!file)return;
+      if(!['image/jpeg','image/png','image/webp'].includes(file.type)){message('Choose a JPG, PNG or WebP image.');return;}
+      if(file.size>20*1024*1024){message('The image must be 20 MB or smaller.');return;}
+      const button=$('publishButton'); button.disabled=true; button.textContent='Publishing…'; let path='';
+      try {
+        path=`${user.id}/${Date.now()}-${file.name.replace(/[^a-z0-9._-]/gi,'_')}`;
+        const {error:uploadError}=await supabase.storage.from('wallpapers').upload(path,file,{upsert:false,contentType:file.type}); if(uploadError)throw uploadError;
+        const {data:{publicUrl}}=supabase.storage.from('wallpapers').getPublicUrl(path);
+        const {error}=await supabase.from('wallpapers').insert({title:$('imageTitle').value.trim(),category:$('imageCategory').value,description:$('imageDescription').value.trim(),image_url:publicUrl,storage_path:path,created_by:user.id});
+        if(error){await supabase.storage.from('wallpapers').remove([path]);throw error;}
+        $('uploadForm').reset(); message('Wallpaper published successfully.'); await refresh();
+      } catch(error){message(`Upload failed: ${error.message}`);}
+      finally{button.disabled=false;button.textContent='Publish wallpaper ↗';}
+    });
+    supabase.auth.onAuthStateChange((_event,session)=>{ if(!session){user=null;setDashboard(false);} });
+    const {data:{session}}=await supabase.auth.getSession();
+    if(session?.user && isAdmin(session.user)){user=session.user;$('adminIdentity').textContent=`Signed in as ${user.email}`;setDashboard(true);refresh().catch(error=>message(`Could not load wallpapers: ${error.message}`));}
+  </script>
+</body>
+</html>
